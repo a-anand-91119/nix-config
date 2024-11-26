@@ -23,13 +23,13 @@
       environment.systemPackages = [ 
         pkgs.neovim
         pkgs.mkalias
-        pkgs.tmux
         pkgs.bat
         pkgs.wget
+        pkgs.tree
+        pkgs.zsh
         pkgs.stow
-        pkgs.eza
-        pkgs.zoxide
         pkgs.pam-reattach
+        pkgs.zsh-powerlevel10k
       ];
 
       homebrew = {
@@ -42,10 +42,14 @@
           "gcc"
           "pre-commit"
           "thefuck"
+          "zoxide"
+          "eza"
+          "tmux"
         ];
         casks = [
           "the-unarchiver"
           "font-meslo-lg-nerd-font"
+          "alacritty"
         ];
         masApps = {
           "Bitwarden" = 1352778147;
@@ -89,7 +93,7 @@
       nix.settings.experimental-features = "nix-command flakes";
 
       # Enable alternative shell support in nix-darwin.
-      # programs.fish.enable = true;
+      programs.zsh.enable = true;
 
       # Set Git commit hash for darwin-version.
       system.configurationRevision = self.rev or self.dirtyRev or null;
