@@ -51,6 +51,7 @@
         pkgs.meslo-lg
         pkgs.zsh-autosuggestions
         pkgs.zsh-you-should-use
+        pkgs.zoxide
       ];
 
       environment.shells = [
@@ -80,6 +81,7 @@
         ll = "ls -l";
         lla = "ls -la";
         cat = "bat";
+        cd = "z";
 
         # git related alias
         gaa = "git add .";
