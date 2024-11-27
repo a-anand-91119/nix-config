@@ -82,13 +82,15 @@
         cat = "bat";
 
         # git related alias
-        # gaa = "git add .";
-        # gc = "git commit";
+        gaa = "git add .";
+        ga = "git add";
+        gc = "git commit";
         gst = "git status";
-        # gd = "git diff";
-        # gpl = "git pull";
-        # gpu = "git push";
-        # gatc = "git commit --amend --no-edit";
+        gs = "git status";
+        gd = "git diff";
+        gl = "git pull";
+        gp = "git push";
+        gatc = "git commit --amend --no-edit";
       };
 
       # Enable alternative shell support in nix-darwin.
