@@ -78,10 +78,11 @@
 
       # Custom aliases in the shell environment
       environment.shellAliases = {
+        # better ls
+        ls = "eza --color=always --git --icons=always";
         ll = "ls -l";
         lla = "ls -la";
         cat = "bat";
-        cd = "z";
 
         # git related alias
         gaa = "git add .";
@@ -105,6 +106,9 @@
         promptInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
         source ${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh
         source ${pkgs.zsh-you-should-use}/share/zsh/plugins/you-should-use/you-should-use.plugin.zsh";
+        variables = {
+          BAT_THEME = "tokyonight_night";
+        };
       };
 
       # Set Git commit hash for darwin-version.
