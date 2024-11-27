@@ -2,3 +2,4 @@
 __pycache__
 .config/btop/themes
 .DS_Store
+.idea

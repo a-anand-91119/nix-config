@@ -28,9 +28,6 @@
    }:
   let
     configuration = { pkgs, config, ... }: {
-      # Allow install of non open-source apps
-      nixpkgs.config.allowUnfree = true;
-
       # List packages installed in system profile. To search by name, run:
       # $ nix-env -qaP | grep wget
       environment.systemPackages = [ 
@@ -45,27 +42,38 @@
         pkgs.btop
         pkgs.eza
         pkgs.git
-        pkgs.fzf
+        pkgs.fzf # Fuzzy finder
         pkgs.zsh-powerlevel10k
         pkgs.nerdfonts
         pkgs.meslo-lg
         pkgs.zsh-autosuggestions
         pkgs.zsh-you-should-use
-        pkgs.zoxide
-        pkgs.delta
+        pkgs.zoxide # Directory jump tool (z)
+        pkgs.delta # Terminal git diff viewer with syntax highlighting
         pkgs.pam-reattach
+        pkgs.lazydocker # Docker TUI
+        pkgs.lazygit # Git TUI
+        pkgs.curl # Command line tool for transferring data with URL syntax
+        pkgs.jq # Command line JSON processor
+        pkgs.yq # Command line YAML processor
+        pkgs.vscode # Visual Studio Code
+        pkgs.htop # Interactive process viewer
+        pkgs.tree # Display directories as trees
+        pkgs.jetbrains-mono # JetBrains Mono font
       ];
 
       environment.shells = [
         pkgs.zsh
       ];
 
+      # pam_reattach support to get TouchId work with tmux
       environment = {
         etc."pam.d/sudo_local".text = ''
           # Managed by Nix Darwin
           auth       optional       ${pkgs.pam-reattach}/lib/pam/pam_reattach.so ignore_ssh
         '';
       };
+
       # homebrew = {
       #   enable = true;
       #   casks = [
@@ -76,7 +84,10 @@
       #   ];
       #   onActivation.cleanup = "zap";
       # };
-      
+
+      # Allow install of non open-source apps
+      nixpkgs.config.allowUnfree = true;
+
       # Auto upgrade nix package and the daemon service.
       services.nix-daemon.enable = true;
       # nix.package = pkgs.nix;
@@ -116,6 +127,7 @@
         source ${pkgs.zsh-you-should-use}/share/zsh/plugins/you-should-use/you-should-use.plugin.zsh";
         variables = {
           BAT_THEME = "tokyonight_night";
+          YSU_MESSAGE_POSITION = "after";
         };
       };
 
@@ -128,6 +140,15 @@
 
       # The platform the configuration will be used on.
       nixpkgs.hostPlatform = "aarch64-darwin";
+
+      system.defaults = {
+        dock.autohide = true;
+        dock.mru-spaces = true; # Most Recently Used spaces.
+        finder.AppleShowAllExtensions = true;
+        # Finder display options are: Nlsv (list), clmv (column), Flwv (cover flow), icnv (icon view)
+        finder.FXPreferredViewStyle = "clmv";
+        screencapture.location = "~/Pictures/Screenshots";
+      };
 
       # Enable sudo authentication with Touch ID.
       security.pam.enableSudoTouchIdAuth = true;
