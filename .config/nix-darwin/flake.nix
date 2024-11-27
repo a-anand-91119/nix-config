@@ -20,6 +20,7 @@
           pkgs.neovim
           pkgs.mkalias
           pkgs.alacritty
+          pkgs.stow
         ];
       
       # Auto upgrade nix package and the daemon service.
