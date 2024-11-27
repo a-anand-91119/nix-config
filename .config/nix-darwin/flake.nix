@@ -33,16 +33,24 @@
 
       # List packages installed in system profile. To search by name, run:
       # $ nix-env -qaP | grep wget
-      environment.systemPackages =
-        [ 
-          pkgs.neovim
-          pkgs.mkalias
-          pkgs.alacritty
-          pkgs.stow
-          pkgs.mas
-          pkgs.tmux
-          pkgs.zsh
-        ];
+      environment.systemPackages = [ 
+        pkgs.neovim
+        pkgs.mkalias
+        pkgs.alacritty
+        pkgs.stow
+        pkgs.mas
+        pkgs.tmux
+        pkgs.zsh
+        pkgs.bat
+        pkgs.btop
+        pkgs.eza
+        pkgs.fzf
+        pkgs.zsh-powerlevel10k
+      ];
+
+      environment.shells = [
+        pkgs.zsh
+      ];
 
       # homebrew = {
       #   enable = true;
@@ -62,8 +70,22 @@
       # Necessary for using flakes on this system.
       nix.settings.experimental-features = "nix-command flakes";
 
+      # Custom aliases in the shell environment
+      environment.shellAliases = {
+        ll = "ls -l";
+        lla = "ls -la";
+        cat = "bat";
+      };
+
       # Enable alternative shell support in nix-darwin.
-      programs.zsh.enable = true;
+      programs.zsh = {
+        enable = true;
+        enableFzfCompletion = true;
+        enableFzfGit = true;
+        enableFzfHistory = true;
+        enableSyntaxHighlighting = true;
+        promptInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+      };
 
       # Set Git commit hash for darwin-version.
       system.configurationRevision = self.rev or self.dirtyRev or null;
