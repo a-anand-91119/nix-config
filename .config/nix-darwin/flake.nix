@@ -6,10 +6,26 @@
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     # Homebrew
-    nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
+    # nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
+    # Declarative tap management
+    # homebrew-core = {
+    #   url = "github:homebrew/homebrew-core";
+    #   flake = false;
+    # };
+    # homebrew-cask = {
+    #   url = "github:homebrew/homebrew-cask";
+    #   flake = false;
+    # };
+    # homebrew-bundle = {
+    #   url = "github:homebrew/homebrew-bundle";
+    #   flake = false;
+    # };
   };
 
-  outputs = inputs@{ self, nix-darwin, nixpkgs, nix-homebrew }:
+  outputs = inputs@{ self, nix-darwin, nixpkgs, 
+  # nix-homebrew,
+  # homebrew-core, homebrew-cask, homebrew-bundle 
+   }:
   let
     configuration = { pkgs, config, ... }: {
       # Allow install of non open-source apps
@@ -23,7 +39,21 @@
           pkgs.mkalias
           pkgs.alacritty
           pkgs.stow
+          pkgs.mas
+          pkgs.tmux
+          pkgs.zsh
         ];
+
+      # homebrew = {
+      #   enable = true;
+      #   casks = [
+      #     # "hammerspoon"
+      #     # "firefox"
+      #     # "iina"
+      #     # "the-unarchiver"
+      #   ];
+      #   onActivation.cleanup = "zap";
+      # };
       
       # Auto upgrade nix package and the daemon service.
       services.nix-daemon.enable = true;
@@ -44,6 +74,9 @@
 
       # The platform the configuration will be used on.
       nixpkgs.hostPlatform = "aarch64-darwin";
+
+      # Enable sudo authentication with Touch ID.
+      security.pam.enableSudoTouchIdAuth = true;
       
       # Nix-darwin does not link installed applications to the user environment. This means apps will not show up
       # in spotlight, and when launched through the dock they come with a terminal window. This is a workaround.
@@ -76,17 +109,26 @@
     darwinConfigurations."Anands-MacBook-Pro--M3-Pro" = nix-darwin.lib.darwinSystem {
       modules = [ 
         configuration 
-        nix-homebrew.darwinModules.nix-homebrew
-        {
-          nix-homebrew = {
-            # Install Homebrew under the default prefix
-            enable = true;
-            # Apple Silicon Only: Also install Homebrew under the default Intel prefix for Rosetta 2
-            enableRosetta = true;
-            # User owning the Homebrew prefix
-            user = "aanand";
-          };
-        }
+        # nix-homebrew.darwinModules.nix-homebrew
+        # {
+        #   nix-homebrew = {
+        #     # Install Homebrew under the default prefix
+        #     enable = true;
+        #     # Apple Silicon Only: Also install Homebrew under the default Intel prefix for Rosetta 2
+        #     enableRosetta = true;
+        #     # User owning the Homebrew prefix
+        #     user = "aanand";
+        #     # # Declarative tap management
+        #     # taps = {
+        #     #   "homebrew/homebrew-core" = homebrew-core;
+        #     #   "homebrew/homebrew-cask" = homebrew-cask;
+        #     #   "homebrew/homebrew-bundle" = homebrew-bundle;
+        #     # };
+        #     # # Enable fully-declarative tap management
+        #     # # With mutableTaps disabled, taps can no longer be added imperatively with `brew tap`.
+        #     # mutableTaps = false;
+        #   };
+        # }
       ];
     };
 
