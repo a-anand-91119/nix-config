@@ -5,9 +5,23 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+    nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
+
+    homebrew-core = {
+      url = "github:homebrew/homebrew-core";
+      flake = false;
+    };
+    homebrew-cask = {
+      url = "github:homebrew/homebrew-cask";
+      flake = false;
+    };
+    homebrew-bundle = {
+      url = "github:homebrew/homebrew-bundle";
+      flake = false;
+    };
   };
 
-  outputs = inputs@{ self, nix-darwin, nixpkgs }:
+  outputs = inputs@{ self, nix-darwin, nixpkgs, nix-homebrew, homebrew-core, homebrew-cask, homebrew-bundle, }:
   let
     configuration = { pkgs, config, ... }: {
       # List packages installed in system profile. To search by name, run:
@@ -74,6 +88,25 @@
         gp = "git push";
         gpu  = "git push";
         gatc = "git commit --amend --no-edit";
+      };
+
+      homebrew = {
+        enable = true;
+        brews = [];
+        taps = [
+          "homebrew/homebrew-cask"
+        ];
+        masApps = {
+          Amphetamine = 937984704;
+        };
+        casks = [
+          "the-unarchiver"
+          "alacritty"
+          "font-meslo-lg-nerd-font"
+         ];
+         onActivation.cleanup = "zap";
+         onActivation.upgrade = true;
+         onActivation.autoUpdate = true;
       };
 
       # Enable alternative shell support in nix-darwin.
@@ -159,7 +192,28 @@
     # Build darwin flake using:
     # $ darwin-rebuild build --flake .#Anands-MacBook-Pro--M3-Pro
     darwinConfigurations."Anands-MacBook-Pro--M3-Pro" = nix-darwin.lib.darwinSystem {
-      modules = [ configuration ];
+      modules = [
+        configuration
+        nix-homebrew.darwinModules.nix-homebrew {
+          nix-homebrew = {
+            # Install Homebrew under the default prefix
+            enable = true;
+            # Apple Silicon Only: Also install Homebrew under the default Intel prefix for Rosetta 2
+            enableRosetta = false;
+            # User owning the Homebrew prefix
+            user = "aanand";
+            # Declarative tap management
+            taps = {
+              "homebrew/homebrew-core" = homebrew-core;
+              "homebrew/homebrew-cask" = homebrew-cask;
+              "homebrew/homebrew-bundle" = homebrew-bundle;
+            };
+            # Enable fully-declarative tap management
+            # With mutableTaps disabled, taps can no longer be added imperatively with `brew tap`.
+            mutableTaps = false;
+          };
+        }
+      ];
     };
 
     # Expose the package set, including overlays, for convenience.
