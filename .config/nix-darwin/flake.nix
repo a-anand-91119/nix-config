@@ -44,8 +44,13 @@
         pkgs.bat
         pkgs.btop
         pkgs.eza
+        pkgs.git
         pkgs.fzf
         pkgs.zsh-powerlevel10k
+        pkgs.nerdfonts
+        pkgs.meslo-lg
+        pkgs.zsh-autosuggestions
+        pkgs.zsh-you-should-use
       ];
 
       environment.shells = [
@@ -75,6 +80,15 @@
         ll = "ls -l";
         lla = "ls -la";
         cat = "bat";
+
+        # git related alias
+        # gaa = "git add .";
+        # gc = "git commit";
+        gst = "git status";
+        # gd = "git diff";
+        # gpl = "git pull";
+        # gpu = "git push";
+        # gatc = "git commit --amend --no-edit";
       };
 
       # Enable alternative shell support in nix-darwin.
@@ -84,7 +98,9 @@
         enableFzfGit = true;
         enableFzfHistory = true;
         enableSyntaxHighlighting = true;
-        promptInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+        promptInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
+        source ${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+        source ${pkgs.zsh-you-should-use}/share/zsh/plugins/you-should-use/you-should-use.plugin.zsh";
       };
 
       # Set Git commit hash for darwin-version.
