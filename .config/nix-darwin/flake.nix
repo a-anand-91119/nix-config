@@ -52,6 +52,7 @@
         pkgs.zsh-autosuggestions
         pkgs.zsh-you-should-use
         pkgs.zoxide
+        pkgs.delta
       ];
 
       environment.shells = [
