@@ -125,6 +125,7 @@
         gd = "git diff";
         gl = "git pull";
         gp = "git push";
+        gpu  = "git push";
         gatc = "git commit --amend --no-edit";
       };
 
@@ -143,9 +144,6 @@
           BAT_THEME = "tokyonight_night";
           YSU_MESSAGE_POSITION = "after";
         };
-#        shellAliases = {
-#          brew = "/opt/homebrew/bin/brew";
-#        };
         shellInit = ''
           # Homebrew setup
           eval "$(/opt/homebrew/bin/brew shellenv)"
