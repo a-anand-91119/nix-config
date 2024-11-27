@@ -1,7 +1,5 @@
 [terminal.shell]
 program = "/run/current-system/sw/bin/tmux"
-# program = "/opt/homebrew/bin/tmux"
-# program = "/run/current-system/sw/bin/zsh"
 
 [env]
 TERM = "xterm-256color"
@@ -23,10 +21,10 @@ normal.family = "MesloLGS Nerd Font Mono"
 
 size = 18
 
-[keyboard] 
+[keyboard]
 bindings = [
-  { key = "Right", mods = "Alt", chars = "\u001BF" }, 
-  { key = "Left", mods = "Alt", chars = "\u001BB" },
+    { key = "Right", mods = "Alt", chars = "\u001BF" },
+    { key = "Left",  mods = "Alt", chars = "\u001BB" },
 ]
 
 [general]
