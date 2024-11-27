@@ -53,12 +53,19 @@
         pkgs.zsh-you-should-use
         pkgs.zoxide
         pkgs.delta
+        pkgs.pam-reattach
       ];
 
       environment.shells = [
         pkgs.zsh
       ];
 
+      environment = {
+        etc."pam.d/sudo_local".text = ''
+          # Managed by Nix Darwin
+          auth       optional       ${pkgs.pam-reattach}/lib/pam/pam_reattach.so ignore_ssh
+        '';
+      };
       # homebrew = {
       #   enable = true;
       #   casks = [
@@ -124,6 +131,8 @@
 
       # Enable sudo authentication with Touch ID.
       security.pam.enableSudoTouchIdAuth = true;
+      # Log file for nix-daemon
+      services.nix-daemon.logFile = "/var/log/nix-daemon.log";
       
       # Nix-darwin does not link installed applications to the user environment. This means apps will not show up
       # in spotlight, and when launched through the dock they come with a terminal window. This is a workaround.
