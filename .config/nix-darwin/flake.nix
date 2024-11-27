@@ -33,7 +33,6 @@
       environment.systemPackages = [ 
         pkgs.neovim
         pkgs.mkalias
-        pkgs.alacritty
         pkgs.stow
         pkgs.mas
         pkgs.tmux
@@ -74,16 +73,30 @@
         '';
       };
 
-      # homebrew = {
-      #   enable = true;
-      #   casks = [
-      #     # "hammerspoon"
-      #     # "firefox"
-      #     # "iina"
-      #     # "the-unarchiver"
-      #   ];
-      #   onActivation.cleanup = "zap";
-      # };
+       homebrew = {
+         enable = true;
+         casks = [
+            "the-unarchiver"
+            "alacritty"
+            "font-meslo-lg-nerd-font"
+         ];
+         brews = [
+#            # `brew install --with-rmtp`, `brew services restart` on version changes
+#            {
+#                name = "denji/nginx/nginx-full";
+#                args = [ "with-rmtp" ];
+#                restart_service = "changed";
+#            }
+#            # `brew install`, always `brew services restart`, `brew link`, `brew unlink mysql` (if it is installed)
+#            {
+#                name = "mysql@5.6";
+#                restart_service = true;
+#                link = true;
+#                conflicts_with = [ "mysql" ];
+#            }
+         ];
+         onActivation.cleanup = "zap";
+       };
 
       # Allow install of non open-source apps
       nixpkgs.config.allowUnfree = true;
@@ -124,11 +137,19 @@
         enableSyntaxHighlighting = true;
         promptInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
         source ${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-        source ${pkgs.zsh-you-should-use}/share/zsh/plugins/you-should-use/you-should-use.plugin.zsh";
+        source ${pkgs.zsh-you-should-use}/share/zsh/plugins/you-should-use/you-should-use.plugin.zsh
+        ";
         variables = {
           BAT_THEME = "tokyonight_night";
           YSU_MESSAGE_POSITION = "after";
         };
+#        shellAliases = {
+#          brew = "/opt/homebrew/bin/brew";
+#        };
+        shellInit = ''
+          # Homebrew setup
+          eval "$(/opt/homebrew/bin/brew shellenv)"
+        '';
       };
 
       # Set Git commit hash for darwin-version.
