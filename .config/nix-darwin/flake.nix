@@ -1,5 +1,5 @@
 {
-  description = "Zenful nix-darwin system flake";
+  description = "Anand's MacOS Nix System flake";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
