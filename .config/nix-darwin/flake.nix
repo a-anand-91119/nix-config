@@ -86,8 +86,10 @@
         gs = "git status";
         gd = "git diff";
         gl = "git pull";
+        gpl = "git pull";
         gp = "git push";
         gpu  = "git push";
+        gpuf  = "git push --force";
         gatc = "git commit --amend --no-edit";
       };
 
