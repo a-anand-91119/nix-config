@@ -31,6 +31,9 @@
       pkgs.htop # Interactive process viewer
       pkgs.tree # Display directories as trees
       pkgs.jetbrains-mono # JetBrains Mono font
+      pkgs.zsh-fzf-tab # Replace zsh's default completion selection menu with fzf!
+      pkgs.fzf-git-sh # Bash and zsh key bindings for Git objects, powered by fzf
+#      pkgs.zsh-fzf-history-search # Replaces Ctrl+R with an fzf-driven select
     ];
 
     # Add Zsh as a valid shell.
