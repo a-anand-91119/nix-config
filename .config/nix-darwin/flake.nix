@@ -88,7 +88,6 @@
         gl = "git pull";
         gpl = "git pull";
         gp = "git push";
-        gpu  = "git push";
         gpuf  = "git push --force";
         gatc = "git commit --amend --no-edit";
       };
@@ -102,6 +101,8 @@
         ];
         masApps = {
           Amphetamine = 937984704;
+          Tailscale = 1475387142;
+          LocalSend = 1661733229;
         };
         casks = [
           "the-unarchiver"
