@@ -34,6 +34,7 @@
       pkgs.zsh-fzf-tab # Replace zsh's default completion selection menu with fzf!
       pkgs.fzf-git-sh # Bash and zsh key bindings for Git objects, powered by fzf
 #      pkgs.zsh-fzf-history-search # Replaces Ctrl+R with an fzf-driven select
+      pkgs.asciinema # Terminal session recorder
     ];
 
     # Add Zsh as a valid shell.
