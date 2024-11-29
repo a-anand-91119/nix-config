@@ -7,7 +7,6 @@
       pkgs.mkalias
       pkgs.stow
       pkgs.mas
-      pkgs.tmux
       pkgs.zsh
       pkgs.bat
       pkgs.btop

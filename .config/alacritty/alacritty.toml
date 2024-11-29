@@ -1,5 +1,6 @@
 [terminal.shell]
-program = "/run/current-system/sw/bin/tmux"
+# program = "/run/current-system/sw/bin/tmux"
+program = "/opt/homebrew/bin/tmux"
 
 [env]
 TERM = "xterm-256color"

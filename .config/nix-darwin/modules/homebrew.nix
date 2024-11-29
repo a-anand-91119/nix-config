@@ -3,7 +3,9 @@
 {
   homebrew = {
       enable = true;
-      brews = [];
+      brews = [
+        "tmux"
+      ];
       taps = [
         "homebrew/homebrew-cask"
         "homebrew/homebrew-core"

@@ -20,6 +20,7 @@
       BAT_THEME = "tokyonight_night";
       YSU_MESSAGE_POSITION = "after";
       ZSH_THEME = "robbyrussel";
+      XGD_CONFIG_HOME = "$HOME/.config";
     };
     shellInit = ''
     '';
