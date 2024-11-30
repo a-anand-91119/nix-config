@@ -17,7 +17,6 @@
     # TODO: Figure out why fzf history search is not working and fix it.
 #    source ${pkgs.zsh-fzf-history-search}/share/zsh-fzf-history-search/zsh-fzf-history-search.plugin.zsh
     variables = {
-      BAT_THEME = "tokyonight_night";
       YSU_MESSAGE_POSITION = "after";
       ZSH_THEME = "robbyrussel";
       XGD_CONFIG_HOME = "$HOME/.config";

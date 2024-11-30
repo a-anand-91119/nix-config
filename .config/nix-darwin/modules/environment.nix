@@ -40,6 +40,7 @@
       fzf-git-sh # Bash and zsh key bindings for Git objects, powered by fzf
 #      zsh-fzf-history-search # Replaces Ctrl+R with an fzf-driven select
       asciinema # Terminal session recorder
+      thefuck
     ];
 
     # Add Zsh as a valid shell.

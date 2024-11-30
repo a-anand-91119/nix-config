@@ -42,8 +42,6 @@
     ".p10k.zsh".text = builtins.readFile ./resources/.p10k.zsh;
     # Alacritty Theme
     ".config/alacritty/themes/themes/coolnight.toml".text = builtins.readFile ./resources/alacritty/themes/coolnight.toml;
-    # Bat Theme
-    "tokyonight_night.tmTheme".text = builtins.readFile ./resources/bat/themes/tokyonight_night.tmTheme;
 
     # # Building this configuration will create a copy of 'dotfiles/screenrc' in
     # # the Nix store. Activating the configuration will then make '~/.screenrc' a
@@ -88,11 +86,10 @@
     };
     shellAliases = {
       # better ls
-      ls = "eza --color=always --git --icons=always";
-      ll = "ls -l";
+      ls = "eza";
       lla = "ls -la";
       cat = "bat";
-
+      cd = "z";
       # git related alias
       gaa = "git add .";
       ga = "git add";
@@ -139,10 +136,28 @@
       blue="#06BCE4"
       cyan="#2CF9ED"
 
+      show_file_or_dir_preview="if [ -d {} ]; then eza --tree --color=always {} | head -200; else bat -n --color=always --line-range :500 {}; fi"
+
       export FZF_DEFAULT_OPTS="--color=fg:''${fg},bg:''${bg},hl:''${purple},fg+:''${fg},bg+:''${bg_highlight},hl+:''${purple},info:''${blue},prompt:''${cyan},pointer:''${cyan},marker:''${cyan},spinner:''${cyan},header:''${cyan}"
+      export FZF_CTRL_T_OPTS="--preview '$show_file_or_dir_preview'"
+      export FZF_ALT_C_OPTS="--preview 'eza --tree --color=always {} | head -200'"
+
+      # Advanced customization of fzf options via _fzf_comprun function
+      # - The first argument to the function is the name of the command.
+      # - You should make sure to pass the rest of the arguments to fzf.
+      _fzf_comprun() {
+        local command=$1
+        shift
+
+        case "$command" in
+          cd)           fzf --preview 'eza --tree --color=always {} | head -200' "$@" ;;
+          export|unset) fzf --preview "eval 'echo $'{}"         "$@" ;;
+          ssh)          fzf --preview 'dig {}'                   "$@" ;;
+          *)            fzf --preview "$show_file_or_dir_preview" "$@" ;;
+        esac
+      }
+
       ### ------------ FZF ------------- ###
-
-
 
       # >>> conda initialize >>>
       # !! Contents within this block are managed by 'conda init' !!
@@ -170,17 +185,37 @@
         source "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
       fi
     '';
+  };
 
-    initExtraBeforeCompInit = ''
-      # initExtraBeforeCompInit extra
-    '';
+  programs.thefuck.enable = true;
+  programs.thefuck.enableInstantMode = true;
 
+  programs.zoxide.enable = true;
 
+  programs.eza = {
+    enable = true;
+    colors = "always";
+    git = true;
+    icons = "always";
   };
 
   programs.bat = {
     enable = true;
-
+    config = {
+      # ----- Bat (better cat) -----
+      theme = "tokyonight_night";
+    };
+    themes = {
+      tokyonight_night = {
+        src = pkgs.fetchFromGitHub {
+          owner = "folke";
+          repo = "tokyonight.nvim";
+          rev = "c2725eb6d086c8c9624456d734bd365194660017";
+          sha256 = "sha256-vKXlFHzga9DihzDn+v+j3pMNDfvhYHcCT8GpPs0Uxgg=";
+        };
+        file = "extras/sublime/tokyonight_night.tmTheme";
+      };
+    };
   };
 
   programs.tmux = {
