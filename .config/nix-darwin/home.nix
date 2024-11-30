@@ -63,6 +63,48 @@
     # EDITOR = "emacs";
   };
 
+  programs.zsh = {
+    enable = true;
+    oh-my-zsh = {
+      enable = true;
+      plugins = [
+        "git"
+        "sublime"
+      ];
+    };
+    shellAliases = {
+      # better ls
+      ls = "eza --color=always --git --icons=always";
+      ll = "ls -l";
+      lla = "ls -la";
+      cat = "bat";
+
+      # git related alias
+      gaa = "git add .";
+      ga = "git add";
+      gc = "git commit";
+      gst = "git status";
+      gs = "git status";
+      gd = "git diff";
+      gl = "git pull";
+      gpl = "git pull";
+      gp = "git push";
+      gpuf  = "git push --force";
+      gatc = "git commit --amend --no-edit";
+    };
+    plugins = [
+     {
+       name = "powerlevel10k-config";
+       src = ./p10k;
+       file = "p10k.zsh";
+     }
+     {
+       name = "zsh-powerlevel10k";
+       src = "${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/";
+       file = "powerlevel10k.zsh-theme";
+     }
+    ];
+  };
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 

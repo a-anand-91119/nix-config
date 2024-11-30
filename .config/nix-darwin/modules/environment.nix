@@ -48,23 +48,5 @@
 
   # Custom aliases in the shell environment
     environment.shellAliases = {
-      # better ls
-      ls = "eza --color=always --git --icons=always";
-      ll = "ls -l";
-      lla = "ls -la";
-      cat = "bat";
-
-      # git related alias
-      gaa = "git add .";
-      ga = "git add";
-      gc = "git commit";
-      gst = "git status";
-      gs = "git status";
-      gd = "git diff";
-      gl = "git pull";
-      gpl = "git pull";
-      gp = "git push";
-      gpuf  = "git push --force";
-      gatc = "git commit --amend --no-edit";
     };
 }
