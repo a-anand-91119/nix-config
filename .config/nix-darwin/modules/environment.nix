@@ -43,8 +43,8 @@
 
     # Add Zsh as a valid shell.
     environment.shells = [
-        pkgs.zsh
-      ];
+      pkgs.zsh
+    ];
 
   # Custom aliases in the shell environment
     environment.shellAliases = {
