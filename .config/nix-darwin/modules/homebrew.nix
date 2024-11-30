@@ -4,7 +4,7 @@
   homebrew = {
       enable = true;
       brews = [
-        "tmux"
+        "gsed"
       ];
       taps = [
         "homebrew/homebrew-cask"
@@ -19,6 +19,8 @@
         "the-unarchiver"
         "alacritty"
         "font-meslo-lg-nerd-font"
+        "font-monaspace-nerd-font"
+        "font-noto-sans-symbols-2"
       ];
       onActivation.cleanup = "zap";
       onActivation.upgrade = true;

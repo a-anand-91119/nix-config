@@ -3,37 +3,42 @@
 {
   # List packages installed in system profile. To search by name, run:
     # $ nix-env -qaP | grep wget
-    environment.systemPackages = [
-      pkgs.mkalias
-      pkgs.stow
-      pkgs.mas
-      pkgs.zsh
-      pkgs.bat
-      pkgs.btop
-      pkgs.eza
-      pkgs.git
-      pkgs.fzf # Fuzzy finder
-      pkgs.zsh-powerlevel10k
-      pkgs.meslo-lg
-      pkgs.zsh-autosuggestions
-      pkgs.zsh-you-should-use
-      pkgs.zoxide # Directory jump tool (z)
-      pkgs.delta # Terminal git diff viewer with syntax highlighting
-      pkgs.pam-reattach
-      pkgs.nerd-fonts.fira-code
-      pkgs.lazydocker # Docker TUI
-      pkgs.lazygit # Git TUI
-      pkgs.curl # Command line tool for transferring data with URL syntax
-      pkgs.jq # Command line JSON processor
-      pkgs.yq # Command line YAML processor
-      pkgs.vscode # Visual Studio Code
-      pkgs.htop # Interactive process viewer
-      pkgs.tree # Display directories as trees
-      pkgs.jetbrains-mono # JetBrains Mono font
-      pkgs.zsh-fzf-tab # Replace zsh's default completion selection menu with fzf!
-      pkgs.fzf-git-sh # Bash and zsh key bindings for Git objects, powered by fzf
-#      pkgs.zsh-fzf-history-search # Replaces Ctrl+R with an fzf-driven select
-      pkgs.asciinema # Terminal session recorder
+    environment.systemPackages = with pkgs; [
+      mkalias
+      stow
+      mas
+      zsh
+      bat
+      btop
+      tmux
+      eza
+      bc
+      coreutils
+      gawk
+      git
+      nowplaying-cli
+      fzf # Fuzzy finder
+      zsh-powerlevel10k
+      meslo-lg
+      zsh-autosuggestions
+      zsh-you-should-use
+      zoxide # Directory jump tool (z)
+      delta # Terminal git diff viewer with syntax highlighting
+      pam-reattach
+      nerd-fonts.fira-code
+      lazydocker # Docker TUI
+      lazygit # Git TUI
+      curl # Command line tool for transferring data with URL syntax
+      jq # Command line JSON processor
+      yq # Command line YAML processor
+      vscode # Visual Studio Code
+      htop # Interactive process viewer
+      tree # Display directories as trees
+      jetbrains-mono # JetBrains Mono font
+      zsh-fzf-tab # Replace zsh's default completion selection menu with fzf!
+      fzf-git-sh # Bash and zsh key bindings for Git objects, powered by fzf
+#      zsh-fzf-history-search # Replaces Ctrl+R with an fzf-driven select
+      asciinema # Terminal session recorder
     ];
 
     # Add Zsh as a valid shell.
