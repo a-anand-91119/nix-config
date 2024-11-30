@@ -42,6 +42,7 @@
     ".p10k.zsh".text = builtins.readFile ./resources/.p10k.zsh;
     # Alacritty Theme
     ".config/alacritty/themes/themes/coolnight.toml".text = builtins.readFile ./resources/alacritty/themes/coolnight.toml;
+    ".nanorc".text = "include ${pkgs.nano}/share/nano/*.nanorc";
 
     # # Building this configuration will create a copy of 'dotfiles/screenrc' in
     # # the Nix store. Activating the configuration will then make '~/.screenrc' a
@@ -174,7 +175,6 @@
       unset __conda_setup
       # <<< conda initialize <<<
 
-
     '';
 
     initExtraFirst = ''
@@ -227,6 +227,7 @@
     keyMode = "vi";
     mouse = true;
     customPaneNavigationAndResize = true;
+    tmuxinator.enable = true;
 
     plugins = with pkgs; [
       tmuxPlugins.sensible
