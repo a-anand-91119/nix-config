@@ -18,6 +18,7 @@
       git
       nowplaying-cli
       fzf # Fuzzy finder
+      fd # Better find
       zsh-powerlevel10k
       meslo-lg
       zsh-autosuggestions

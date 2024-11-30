@@ -40,7 +40,11 @@
   home.file = {
     # Copying powerlevel10k config file to home folder
     ".p10k.zsh".text = builtins.readFile ./resources/.p10k.zsh;
+    # Alacritty Theme
     ".config/alacritty/themes/themes/coolnight.toml".text = builtins.readFile ./resources/alacritty/themes/coolnight.toml;
+    # Bat Theme
+    "tokyonight_night.tmTheme".text = builtins.readFile ./resources/bat/themes/tokyonight_night.tmTheme;
+
     # # Building this configuration will create a copy of 'dotfiles/screenrc' in
     # # the Nix store. Activating the configuration will then make '~/.screenrc' a
     # # symlink to the Nix store copy.
@@ -103,15 +107,14 @@
       gatc = "git commit --amend --no-edit";
     };
 
-    profileExtra = ''
-     # profile extra
-    '';
-
     initExtra = ''
       # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
       [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+      ### ------------ FZF ------------- ###
+      # Set up fzf key bindings and fuzzy completion
       eval "$(fzf --zsh)"
+
       export FZF_DEFAULT_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git"
       export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
       export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude .git"
@@ -128,6 +131,35 @@
         fd --type=d --hidden --exclude .git . "$1"
       }
 
+      # --- setup fzf theme ---
+      fg="#CBE0F0"
+      bg="#011628"
+      bg_highlight="#143652"
+      purple="#B388FF"
+      blue="#06BCE4"
+      cyan="#2CF9ED"
+
+      export FZF_DEFAULT_OPTS="--color=fg:''${fg},bg:''${bg},hl:''${purple},fg+:''${fg},bg+:''${bg_highlight},hl+:''${purple},info:''${blue},prompt:''${cyan},pointer:''${cyan},marker:''${cyan},spinner:''${cyan},header:''${cyan}"
+      ### ------------ FZF ------------- ###
+
+
+
+      # >>> conda initialize >>>
+      # !! Contents within this block are managed by 'conda init' !!
+      __conda_setup="$('/opt/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+      if [ $? -eq 0 ]; then
+          eval "$__conda_setup"
+      else
+          if [ -f "/opt/anaconda3/etc/profile.d/conda.sh" ]; then
+              . "/opt/anaconda3/etc/profile.d/conda.sh"
+          else
+              export PATH="/opt/anaconda3/bin:$PATH"
+          fi
+      fi
+      unset __conda_setup
+      # <<< conda initialize <<<
+
+
     '';
 
     initExtraFirst = ''
@@ -143,6 +175,11 @@
       # initExtraBeforeCompInit extra
     '';
 
+
+  };
+
+  programs.bat = {
+    enable = true;
 
   };
 
@@ -299,10 +336,6 @@
             chars = "\\u001BB";
           }
         ];
-#        bindings = [
-#          { key = "Right", mods = "Alt", chars = "\u001BF", },
-#          { key = "Left", mods = "Alt", chars = "\u001BB", }
-#        ];
       };
       general = {
         import = [
