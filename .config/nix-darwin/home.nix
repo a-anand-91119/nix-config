@@ -36,7 +36,11 @@
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
+
   home.file = {
+    # Copying powerlevel10k config file to home folder
+    ".p10k.zsh".text = builtins.readFile ./resources/.p10k.zsh;
+    ".config/alacritty/themes/themes/coolnight.toml".text = builtins.readFile ./resources/alacritty/themes/coolnight.toml;
     # # Building this configuration will create a copy of 'dotfiles/screenrc' in
     # # the Nix store. Activating the configuration will then make '~/.screenrc' a
     # # symlink to the Nix store copy.
@@ -63,10 +67,16 @@
     # EDITOR = "emacs";
   };
 
+  # Let Home Manager install and manage itself.
+  programs.home-manager.enable = true;
+
   programs.zsh = {
     enable = true;
+    dotDir = ".config/zsh";
+
     oh-my-zsh = {
       enable = true;
+      theme = "robbyrussell";
       plugins = [
         "git"
         "sublime"
@@ -92,21 +102,49 @@
       gpuf  = "git push --force";
       gatc = "git commit --amend --no-edit";
     };
-    plugins = [
-     {
-       name = "powerlevel10k-config";
-       src = ./p10k;
-       file = "p10k.zsh";
-     }
-     {
-       name = "zsh-powerlevel10k";
-       src = "${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/";
-       file = "powerlevel10k.zsh-theme";
-     }
-    ];
+
+    profileExtra = ''
+     # profile extra
+    '';
+
+    initExtra = ''
+      # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+      [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+      eval "$(fzf --zsh)"
+      export FZF_DEFAULT_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git"
+      export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+      export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude .git"
+
+      # Use fd (https://github.com/sharkdp/fd) for listing path candidates.
+      # - The first argument to the function ($1) is the base path to start traversal
+      # - See the source code (completion.{bash,zsh}) for the details.
+      _fzf_compgen_path() {
+        fd --hidden --exclude .git . "$1"
+      }
+
+      # Use fd to generate the list for directory completion
+      _fzf_compgen_dir() {
+        fd --type=d --hidden --exclude .git . "$1"
+      }
+
+    '';
+
+    initExtraFirst = ''
+      # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+      # Initialization code that may require console input (password prompts, [y/n]
+      # confirmations, etc.) must go above this block; everything else may go below.
+      if [[ -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
+        source "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
+      fi
+    '';
+
+    initExtraBeforeCompInit = ''
+      # initExtraBeforeCompInit extra
+    '';
+
+
   };
-  # Let Home Manager install and manage itself.
-  programs.home-manager.enable = true;
 
   programs.tmux = {
     enable = true;
@@ -250,9 +288,21 @@
 
       keyboard = {
         bindings = [
-          { key = "Right"; mods = "Alt"; chars = "\u001BF"; }
-          { key = "Left"; mods = "Alt"; chars = "\u001BB"; }
+          {
+            key = "Right";
+            mods = "Alt";
+            chars = "\\u001BF";
+          }
+          {
+            key = "Left";
+            mods = "Alt";
+            chars = "\\u001BB";
+          }
         ];
+#        bindings = [
+#          { key = "Right", mods = "Alt", chars = "\u001BF", },
+#          { key = "Left", mods = "Alt", chars = "\u001BB", }
+#        ];
       };
       general = {
         import = [
