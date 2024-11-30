@@ -7,4 +7,7 @@ __pycache__
 
 .config/git
 .config/tmux
-.config/alacritty/alacritty.toml
+.config/alacritty
+.config/zsh
+.config/bat
+.config/thefuck

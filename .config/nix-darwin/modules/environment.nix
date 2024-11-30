@@ -18,6 +18,7 @@
       git
       nowplaying-cli
       fzf # Fuzzy finder
+      fd # Better find
       zsh-powerlevel10k
       meslo-lg
       zsh-autosuggestions
@@ -39,6 +40,7 @@
       fzf-git-sh # Bash and zsh key bindings for Git objects, powered by fzf
 #      zsh-fzf-history-search # Replaces Ctrl+R with an fzf-driven select
       asciinema # Terminal session recorder
+      thefuck
     ];
 
     # Add Zsh as a valid shell.
@@ -48,23 +50,5 @@
 
   # Custom aliases in the shell environment
     environment.shellAliases = {
-      # better ls
-      ls = "eza --color=always --git --icons=always";
-      ll = "ls -l";
-      lla = "ls -la";
-      cat = "bat";
-
-      # git related alias
-      gaa = "git add .";
-      ga = "git add";
-      gc = "git commit";
-      gst = "git status";
-      gs = "git status";
-      gd = "git diff";
-      gl = "git pull";
-      gpl = "git pull";
-      gp = "git push";
-      gpuf  = "git push --force";
-      gatc = "git commit --amend --no-edit";
     };
 }
