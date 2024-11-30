@@ -180,7 +180,7 @@
   };
 
   programs.alacritty = {
-    enable = false;
+    enable = true;
     settings = {
       terminal.shell = {
         program = "${pkgs.tmux}/bin/tmux";
