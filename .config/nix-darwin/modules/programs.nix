@@ -14,8 +14,6 @@
     source ${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh
     source ${pkgs.fzf-git-sh}/share/fzf-git-sh/fzf-git.sh
     ";
-    # TODO: Figure out why fzf history search is not working and fix it.
-#    source ${pkgs.zsh-fzf-history-search}/share/zsh-fzf-history-search/zsh-fzf-history-search.plugin.zsh
     variables = {
       YSU_MESSAGE_POSITION = "after";
       ZSH_THEME = "robbyrussel";
