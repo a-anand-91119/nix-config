@@ -41,6 +41,11 @@
 #      zsh-fzf-history-search # Replaces Ctrl+R with an fzf-driven select
       asciinema # Terminal session recorder
       thefuck
+      yazi # Terminal file manager
+      jless # Command-line pager for JSON data
+      xh # Friendly and fast tool for sending HTTP requests
+      kondo # Clean unneeded files from software projects
+      mprocs # Run multiple commands in parallel
     ];
 
     # Add Zsh as a valid shell.
