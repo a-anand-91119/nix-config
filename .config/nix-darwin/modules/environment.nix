@@ -34,13 +34,18 @@
       yq # Command line YAML processor
       vscode # Visual Studio Code
       htop # Interactive process viewer
-      tree # Display directories as trees
       jetbrains-mono # JetBrains Mono font
       zsh-fzf-tab # Replace zsh's default completion selection menu with fzf!
       fzf-git-sh # Bash and zsh key bindings for Git objects, powered by fzf
 #      zsh-fzf-history-search # Replaces Ctrl+R with an fzf-driven select
       asciinema # Terminal session recorder
       thefuck
+      yazi # Terminal file manager
+      jless # Command-line pager for JSON data
+      xh # Friendly and fast tool for sending HTTP requests
+      kondo # Clean unneeded files from software projects
+      mprocs # Run multiple commands in parallel
+      pre-commit # Pre-commit for development
     ];
 
     # Add Zsh as a valid shell.
