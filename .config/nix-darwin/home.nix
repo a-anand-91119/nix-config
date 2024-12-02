@@ -210,10 +210,11 @@
 
   programs.tmux = {
     enable = true;
+    shell = "${pkgs.zsh}/bin/zsh";
     terminal = "tmux-256color";
     prefix = "C-a";
     baseIndex = 1;
-    sensibleOnTop = false;
+    sensibleOnTop = true;
     keyMode = "vi";
     mouse = true;
     customPaneNavigationAndResize = true;
@@ -221,7 +222,6 @@
 
     plugins = with pkgs; [
       tmuxPlugins.sensible
-      tmuxPlugins.logging
       tmuxPlugins.better-mouse-mode
       tmuxPlugins.vim-tmux-navigator
       tmuxPlugins.tmux-fzf

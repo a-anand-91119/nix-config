@@ -45,6 +45,7 @@
       xh # Friendly and fast tool for sending HTTP requests
       kondo # Clean unneeded files from software projects
       mprocs # Run multiple commands in parallel
+      pre-commit # Pre-commit for development
     ];
 
     # Add Zsh as a valid shell.

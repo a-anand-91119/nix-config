@@ -14,6 +14,7 @@
         Amphetamine = 937984704;
         Tailscale = 1475387142;
         LocalSend = 1661733229;
+        WhatsApp = 310633997;
       };
       casks = [
         "the-unarchiver"
