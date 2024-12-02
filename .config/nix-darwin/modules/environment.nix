@@ -34,7 +34,6 @@
       yq # Command line YAML processor
       vscode # Visual Studio Code
       htop # Interactive process viewer
-      tree # Display directories as trees
       jetbrains-mono # JetBrains Mono font
       zsh-fzf-tab # Replace zsh's default completion selection menu with fzf!
       fzf-git-sh # Bash and zsh key bindings for Git objects, powered by fzf
