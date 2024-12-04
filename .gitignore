@@ -1,13 +1,6 @@
 *.log
 __pycache__
-.config/btop/themes
 .DS_Store
-.idea
-.config/asciinema
 
-.config/git
-.config/tmux
-.config/alacritty
-.config/zsh
-.config/bat
-.config/thefuck
+.idea
+.config/
