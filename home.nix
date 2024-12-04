@@ -42,8 +42,10 @@
     ".p10k.zsh".text = builtins.readFile ./resources/.p10k.zsh;
     # Alacritty Theme
     ".config/alacritty/themes/themes/coolnight.toml".text = builtins.readFile ./resources/alacritty/themes/coolnight.toml;
+    # Syntax highlighting in nano
     ".nanorc".text = "include ${pkgs.nano}/share/nano/*.nanorc";
-    ".config/btop/themes/tokyo-night.theme" = builtins.readFile ./resources/btop/themes/tokyo-night.theme;
+    # Theme for Btop
+    ".config/btop/themes/tokyo-night.theme".text = builtins.readFile ./resources/btop/themes/tokyo-night.theme;
 
     # # Building this configuration will create a copy of 'dotfiles/screenrc' in
     # # the Nix store. Activating the configuration will then make '~/.screenrc' a
@@ -76,12 +78,16 @@
   programs.thefuck.enable = true;
   programs.thefuck.enableInstantMode = true;
   programs.zoxide.enable = true;
+  programs.fastfetch.enable = true;
+  programs.ripgrep.enable = true;
 
   imports = [
     ./apps/alacritty.nix
     ./apps/bat.nix
+    ./apps/btop.nix
     ./apps/eza.nix
     ./apps/git.nix
+    ./apps/helix.nix
     ./apps/tmux.nix
     ./apps/zsh.nix
   ];
