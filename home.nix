@@ -43,6 +43,7 @@
     # Alacritty Theme
     ".config/alacritty/themes/themes/coolnight.toml".text = builtins.readFile ./resources/alacritty/themes/coolnight.toml;
     ".nanorc".text = "include ${pkgs.nano}/share/nano/*.nanorc";
+    ".config/btop/themes/tokyo-night.theme" = builtins.readFile ./resources/btop/themes/tokyo-night.theme;
 
     # # Building this configuration will create a copy of 'dotfiles/screenrc' in
     # # the Nix store. Activating the configuration will then make '~/.screenrc' a
