@@ -13,6 +13,8 @@
       ];
     };
     shellAliases = {
+      # darwin-rebuild flake
+      dr = "darwin-rebuild switch --flake ~/nix-config";
       # better ls
       ls = "eza";
       lla = "ls -la";
