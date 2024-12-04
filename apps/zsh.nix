@@ -17,6 +17,7 @@
       dr = "darwin-rebuild switch --flake ~/nix-config";
       # better ls
       ls = "eza";
+      tree = "eza --tree";
       lla = "ls -la";
       cat = "bat";
       cd = "z";
