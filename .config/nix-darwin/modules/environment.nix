@@ -46,6 +46,7 @@
       kondo # Clean unneeded files from software projects
       mprocs # Run multiple commands in parallel
       pre-commit # Pre-commit for development
+      ansible-lint # Best practices checker for Ansible
     ];
 
     # Add Zsh as a valid shell.
