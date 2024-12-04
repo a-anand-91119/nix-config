@@ -20,7 +20,6 @@
       lla = "ls -la";
       cat = "bat";
       cd = "z";
-
       # git related alias
       gaa = "git add .";
       ga = "git add";
