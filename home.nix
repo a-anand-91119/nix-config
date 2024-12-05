@@ -80,6 +80,7 @@
   programs.zoxide.enable = true;
   programs.fastfetch.enable = true;
   programs.ripgrep.enable = true;
+  programs.direnv.enable = true;
 
   imports = [
     ./apps/alacritty.nix
