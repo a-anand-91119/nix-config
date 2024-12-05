@@ -47,6 +47,7 @@
       mprocs # Run multiple commands in parallel
       pre-commit # Pre-commit for development
       ansible-lint # Best practices checker for Ansible
+      dust # Like du but more intuitive
     ];
 
     # Add Zsh as a valid shell.
