@@ -1,11 +1,12 @@
 { pkgs, config, ... }:
 
 {
-# Default system settings
+  # Default system settings
   system.defaults = {
     dock.autohide = true;
     dock.mru-spaces = true; # Most Recently Used spaces.
     finder.AppleShowAllExtensions = true;
+    loginwindow.LoginwindowText = "Not Your Average Dev";
     # Finder display options are: Nlsv (list), clmv (column), Flwv (cover flow), icnv (icon view)
     finder.FXPreferredViewStyle = "clmv";
     screencapture.location = "~/Pictures/Screenshots";

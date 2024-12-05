@@ -48,6 +48,7 @@
       pre-commit # Pre-commit for development
       ansible-lint # Best practices checker for Ansible
       dust # Like du but more intuitive
+      devenv # for mananging dev environments
     ];
 
     # Add Zsh as a valid shell.
