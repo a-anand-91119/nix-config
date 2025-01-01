@@ -23,8 +23,10 @@
         "font-monaspace-nerd-font"
         "font-noto-sans-symbols-2"
       ];
-      onActivation.cleanup = "zap";
-      onActivation.upgrade = true;
-      onActivation.autoUpdate = true;
+      onActivation = {
+        cleanup = "zap";
+        upgrade = true;
+        autoUpdate = true;
+      };
     };
 }
