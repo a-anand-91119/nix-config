@@ -49,6 +49,7 @@
       ansible-lint # Best practices checker for Ansible
       dust # Like du but more intuitive
       devenv # for mananging dev environments
+      devbox # Instant, easy, predictable shells and containers
     ];
 
     # Add Zsh as a valid shell.
