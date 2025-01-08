@@ -46,3 +46,8 @@ darwin-rebuild switch --recreate-lock-file --flake ~/nix-config
 - nix-homebrew: https://github.com/zhaofengli/nix-homebrew
 - nix-darwin: https://github.com/LnL7/nix-darwin
 - Mac sample setup: https://github.com/torgeir/nix-darwin
+- Github References: 
+  - https://github.com/ProfessorFlaw/NixDotfiles/blob/main/configuration.nix
+  - https://github.com/mcdonc/.nixconfig/blob/master/videos/peruserperhost/script.rst
+- Youtube Example: https://www.youtube.com/watch?v=e8vzW5Y8Gzg
+- MyNixOS: https://mynixos.com/
