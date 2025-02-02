@@ -5,6 +5,8 @@
       enable = true;
       brews = [
         "gsed"
+        "kubectl"
+        "helm"
       ];
       taps = [
         "homebrew/homebrew-cask"
