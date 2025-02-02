@@ -7,6 +7,7 @@
         "gsed"
         "kubectl"
         "helm"
+        "k9s"
       ];
       taps = [
         "homebrew/homebrew-cask"

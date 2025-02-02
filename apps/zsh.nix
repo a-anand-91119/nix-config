@@ -33,6 +33,8 @@
       gp = "git push";
       gpuf  = "git push --force";
       gatc = "git commit --amend --no-edit";
+      # kubectl alias
+      k = "kubectl";
     };
 
     initExtra = ''
