@@ -18,6 +18,7 @@
         Tailscale = 1475387142;
         LocalSend = 1661733229;
         WhatsApp = 310633997;
+        Telegram = 747648890;
       };
       casks = [
         "the-unarchiver"
