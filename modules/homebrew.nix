@@ -8,6 +8,7 @@
         "kubectl"
         "helm"
         "k9s"
+        "nmap"
       ];
       taps = [
         "homebrew/homebrew-cask"
