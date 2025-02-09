@@ -36,6 +36,7 @@
       gatc = "git commit --amend --no-edit";
       # kubectl alias
       k = "kubectl";
+      dtmux = "tmux kill-server && rm -rf /tmp/tmux-*";
     };
 
     initExtra = ''

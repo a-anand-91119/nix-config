@@ -7,14 +7,14 @@
     terminal = "screen-256color"; # set terminal type for 256-color support
     prefix = "C-a";
     baseIndex = 1;
-    sensibleOnTop = false;
+    sensibleOnTop = true;
     keyMode = "vi";
     mouse = true;
     customPaneNavigationAndResize = true;
     shell = "${pkgs.zsh}/bin/zsh";
 
     plugins = with pkgs; [
-      tmuxPlugins.sensible
+#      tmuxPlugins.sensible
       tmuxPlugins.logging
       tmuxPlugins.better-mouse-mode
       tmuxPlugins.vim-tmux-navigator
@@ -82,7 +82,9 @@
       bind - split-window -v -c "#{pane_current_path}"
 
       # New window in the same path
-      bind c new-window -c "#{pane_current_path}"
+      bind c new-window -c "#{pane_current_path}
+
+      set -g renumber-windows on # Automatically renumber windows when one is closed
 
       # remove delay for exiting insert mode with ESC in Neovim
       set -sg escape-time 10
