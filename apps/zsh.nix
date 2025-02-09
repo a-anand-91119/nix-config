@@ -20,6 +20,7 @@
       tree = "eza --tree";
       lla = "ls -la";
       cat = "bat";
+      ccat = "bat --paging=never";
       cd = "z";
       # git related alias
       gaa = "git add .";

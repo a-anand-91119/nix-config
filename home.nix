@@ -89,7 +89,7 @@
     ./apps/eza.nix
     ./apps/git.nix
     ./apps/helix.nix
-    ./apps/tmux.nix
     ./apps/zsh.nix
+    ./apps/tmux.nix
   ];
 }
