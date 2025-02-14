@@ -20,6 +20,7 @@
         LocalSend = 1661733229;
         WhatsApp = 310633997;
         Telegram = 747648890;
+        "CrystalFetch ISO Downloader" = 6454431289;
       };
       casks = [
         "the-unarchiver"
