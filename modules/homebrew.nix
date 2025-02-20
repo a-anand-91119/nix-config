@@ -29,6 +29,7 @@
         "font-monaspace-nerd-font"
         "font-noto-sans-symbols-2"
         "ghostty"
+        "graphql-playground"
       ];
       onActivation = {
         cleanup = "zap";
