@@ -9,6 +9,7 @@
         "helm"
         "k9s"
         "nmap"
+        "operator-sdk"
       ];
       taps = [
         "homebrew/homebrew-cask"
