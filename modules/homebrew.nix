@@ -10,6 +10,7 @@
         "k9s"
         "nmap"
         "operator-sdk"
+        "grpcurl"
       ];
       taps = [
         "homebrew/homebrew-cask"
@@ -21,7 +22,6 @@
         LocalSend = 1661733229;
         WhatsApp = 310633997;
         Telegram = 747648890;
-        "CrystalFetch ISO Downloader" = 6454431289;
       };
       casks = [
         "the-unarchiver"
@@ -29,8 +29,6 @@
         "font-meslo-lg-nerd-font"
         "font-monaspace-nerd-font"
         "font-noto-sans-symbols-2"
-        "ghostty"
-        "graphql-playground"
       ];
       onActivation = {
         cleanup = "zap";
