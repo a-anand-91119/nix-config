@@ -11,6 +11,7 @@
         "nmap"
         "operator-sdk"
         "grpcurl"
+        "k6"
       ];
       taps = [
         "homebrew/homebrew-cask"
