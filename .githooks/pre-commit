@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+set -uo pipefail
+
+# A pre-commit hook to check Nix syntax before committing
+
+echo "Running pre-commit Nix syntax checks..."
+
+# Get list of staged Nix files
+STAGED_NIX_FILES=$(git diff --cached --name-only --diff-filter=ACMR | grep '\.nix$' || true)
+
+# Only run syntax check if there are staged Nix files
+if [[ -n "$STAGED_NIX_FILES" ]]; then
+  echo "Found staged Nix files, checking syntax..."
+  echo "$STAGED_NIX_FILES" | while read -r file; do
+    if [[ -f "$file" ]]; then
+      echo "Checking syntax for $file..."
+      nix-instantiate --parse "$file" >/dev/null || {
+        echo "Syntax error in $file"
+        exit 1
+      }
+    fi
+  done
+else
+  echo "No Nix files staged, skipping syntax check"
+fi
+
+# Basic flake check if flake.nix is staged
+if git diff --cached --name-only | grep -q "flake.nix"; then
+  echo "flake.nix is staged, running flake check..."
+  nix flake check || {
+    echo "Error in flake check"
+    exit 1
+  }
+fi
+
+echo "All checks passed!"
+exit 0

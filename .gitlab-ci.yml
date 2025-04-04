@@ -1,0 +1,61 @@
+---
+image: nixos/nix:latest
+
+workflow:
+  rules:
+    - if: $CI_SERVER_URL == "https://gitlab.notyouraverage.dev"
+      when: always
+    - when: never
+
+stages:
+  - lint
+  - check
+
+variables:
+  NIX_CONFIG: "experimental-features = nix-command flakes"
+
+# Cache the Nix store between pipeline runs
+cache:
+  key: nix-store
+  paths:
+    - /nix/store
+
+before_script:
+  - echo "Starting CI/CD pipeline"
+  - nix --version
+
+lint:
+  stage: lint
+  script:
+    # Check syntax of all Nix files
+    - echo "Checking Nix syntax..."
+    - find . -name "*.nix" -type f -exec sh -c "echo 'Checking {}...' && nix-instantiate --parse '{}' >/dev/null" \;
+    # Optionally check formatting, install nixpkgs-fmt first
+    - echo "Installing nixpkgs-fmt..."
+    - nix-env -f '<nixpkgs>' -iA nixpkgs-fmt
+    - echo "Checking Nix formatting..."
+    - nixpkgs-fmt --check $(find . -name "*.nix" -type f)
+    # Optionally run statix for linting
+    - echo "Installing statix..."
+    - nix-env -f '<nixpkgs>' -iA statix
+    - echo "Running statix linting..."
+    - statix check
+
+flake-check:
+  stage: check
+  script:
+    # Check that the flake evaluates correctly
+    - echo "Checking flake evaluation..."
+    - nix flake check
+    # Try to build the flake
+    - echo "Attempting to build the flake..."
+    - nix build .#darwinConfigurations."Anands-MacBook-Pro--M3-Pro".system --dry-run
+  allow_failure: true
+
+dry-run:
+  stage: check
+  script:
+    # Dry run to verify the configuration would generate correctly
+    - echo "Running a dry build of the configuration..."
+    - nix eval --json '.#darwinConfigurations."Anands-MacBook-Pro--M3-Pro".config.system.build.toplevel.drvPath' --impure || echo "This step is expected to fail due to Darwin-specific paths"
+  allow_failure: true

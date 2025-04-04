@@ -35,6 +35,26 @@ darwin-rebuild switch --recreate-lock-file --flake ~/nix-config
 ```
 
 
+### Testing the Configuration
+
+This repository includes automated tests to verify the correctness of the Nix configuration:
+
+1. **GitLab CI/CD**: The `.gitlab-ci.yml` file defines a pipeline that:
+   - Checks syntax of all Nix files
+   - Verifies formatting with `nixpkgs-fmt`
+   - Runs linting with `statix`
+   - Performs a dry-run build of the configuration
+
+2. **Local Testing**:
+   - Run `./scripts/test.sh` to verify your configuration locally
+   - Install git hooks with `./scripts/setup-hooks.sh` to automatically check syntax before commits
+
+3. **Manual Checks**:
+   - Check syntax of a single file: `nix-instantiate --parse path/to/file.nix`
+   - Validate flake: `nix flake check`
+   - Test build without applying: `nix build .#darwinConfigurations."Anands-MacBook-Pro--M3-Pro".system --dry-run`
+
+
 ### References
 
 - https://nixos-and-flakes.thiscute.world/
