@@ -1,7 +1,7 @@
 { pkgs, config, ... }:
 {
 
-# Create /etc/zshrc that loads the nix-darwin environment.
+  # Create /etc/zshrc that loads the nix-darwin environment.
   programs.zsh = {
     enable = true; # default shell on catalina
     enableFzfCompletion = true;

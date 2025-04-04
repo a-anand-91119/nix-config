@@ -32,7 +32,7 @@
       gl = "git pull";
       gpl = "git pull";
       gp = "git push";
-      gpuf  = "git push --force";
+      gpuf = "git push --force";
       gatc = "git commit --amend --no-edit";
       # kubectl alias
       k = "kubectl";
