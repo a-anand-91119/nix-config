@@ -9,11 +9,11 @@
   # nix.package = pkgs.nix;
 
   nix = {
-# Necessary for using flakes on this system.
-  # enable flakes globally
-  settings.experimental-features = [ "nix-command" "flakes" ];
+    # Necessary for using flakes on this system.
+    # enable flakes globally
+    settings.experimental-features = [ "nix-command" "flakes" ];
 
-  # Perform garbage collection weekly to maintain low disk usage
+    # Perform garbage collection weekly to maintain low disk usage
     gc = {
       automatic = true;
       interval = { Weekday = 0; Hour = 0; Minute = 0; };

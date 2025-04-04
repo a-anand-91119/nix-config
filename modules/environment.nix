@@ -2,7 +2,7 @@
 
 {
   environment = {
-  # List packages installed in system profile. To search by name, run:
+    # List packages installed in system profile. To search by name, run:
     # $ nix-env -qaP | grep wget
     systemPackages = with pkgs; [
       mkalias
@@ -53,13 +53,13 @@
       devbox # Instant, easy, predictable shells and containers
       nixpkgs-fmt
     ];
-  # Add Zsh as a valid shell.
+    # Add Zsh as a valid shell.
     shells = [
       pkgs.zsh
     ];
 
     # Custom aliases in the shell environment
-      shellAliases = { };
+    shellAliases = { };
   };
 
 
