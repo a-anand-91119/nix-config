@@ -51,9 +51,11 @@
           }
           home-manager.darwinModules.home-manager
           {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.aanand = import ./home.nix;
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              users.aanand = import ./home.nix;
+            };
           }
           nix-homebrew.darwinModules.nix-homebrew
           {
