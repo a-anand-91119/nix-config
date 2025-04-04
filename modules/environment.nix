@@ -50,6 +50,7 @@
       dust # Like du but more intuitive
       devenv # for mananging dev environments
       devbox # Instant, easy, predictable shells and containers
+      nixpkgs-fmt
     ];
 
     # Add Zsh as a valid shell.
