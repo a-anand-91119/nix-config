@@ -12,6 +12,7 @@
         "operator-sdk"
         "grpcurl"
         "k6"
+        "rclone"
       ];
       taps = [
         "homebrew/homebrew-cask"
