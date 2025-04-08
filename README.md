@@ -2,7 +2,7 @@
 
 1. Install the package manager
     ```shell
-    sh <(curl -L https://nixos.org/nix/install)
+   curl -L https://nixos.org/nix/install | sh -s -- --daemon
     ```
 2. Clone this repository
    ```shell
@@ -19,7 +19,19 @@ Run the following command to update nix
 ```shell
 sudo -i sh -c 'nix-channel --update && nix-env --install --attr nixpkgs.nix && launchctl remove org.nixos.nix-daemon && launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist'
 ```
+#### Incase of ssl Error, follow these steps
+Check for an old symlink like this:
+```shell
+ls -la /etc/ssl/certs/ca-certificates.crt
+```
+If you have it (e.g. pointing to /etc/static/ssl/certs/ca-certificates.crt remove and create a new one.
 
+TL;DR: Try this
+```shell
+sudo rm /etc/ssl/certs/ca-certificates.crt
+sudo ln -s /nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt /etc/ssl/certs/ca-certificates.crt
+```
+> Ref: https://discourse.nixos.org/t/ssl-ca-cert-error-on-macos/31171/3
 
 ### Updating the System
 With Flakes, updating the system is straightforward. Simply execute the following commands.
