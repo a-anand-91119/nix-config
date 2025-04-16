@@ -109,7 +109,15 @@
       unset __conda_setup
       # <<< conda initialize <<<
 
-
+      ### ------------ jenv ------------- ###
+      export PATH="$HOME/.jenv/bin:$PATH"
+      eval "$(jenv init -)"
+      # Adding all java to jenv
+      jenv add $HOMEBREW_PREFIX/opt/openjdk@11
+      jenv add $HOMEBREW_PREFIX/opt/openjdk@17
+      jenv add $HOMEBREW_PREFIX/opt/openjdk@21
+      jenv add $HOMEBREW_PREFIX/opt/openjdk@23
+      ### ------------ jenv ------------- ###
     '';
 
     initExtraFirst = ''

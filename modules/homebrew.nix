@@ -13,6 +13,13 @@
       "grpcurl"
       "k6"
       "rclone"
+      "pnpm"
+      "openjdk@8"
+      "openjdk@11"
+      "openjdk@17"
+      "openjdk@21"
+      "openjdk@23"
+      "jenv"
     ];
     taps = [
       "homebrew/homebrew-cask"
