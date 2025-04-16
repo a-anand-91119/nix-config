@@ -2,7 +2,7 @@
 
 {
   # Enable sudo authentication with Touch ID.
-  security.pam.enableSudoTouchIdAuth = true;
+  security.pam.services.sudo_local.touchIdAuth = true;
 
   # pam_reattach support to get TouchId work with tmux
   environment = {
