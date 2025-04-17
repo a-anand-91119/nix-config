@@ -7,7 +7,7 @@
   # nix.package = pkgs.nix;
 
   nix = {
-  # Auto upgrade nix package and the daemon service.
+    # Auto upgrade nix package and the daemon service.
     enable = true;
     # Necessary for using flakes on this system.
     # enable flakes globally
