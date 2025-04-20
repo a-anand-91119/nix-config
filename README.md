@@ -46,6 +46,17 @@ darwin-rebuild switch --flake ~/nix-config
 darwin-rebuild switch --recreate-lock-file --flake ~/nix-config
 ```
 
+### Troubleshooting
+
+**Zsh: `compinit: insecure directories` Warning**
+
+If you encounter a warning like `zsh compinit: insecure directories, run compaudit for list.` upon opening a new shell, it means Zsh's completion system has found directories with permissions it considers insecure (often group-writable). You can often fix this by running:
+
+```shell
+compaudit | xargs chmod g-w
+```
+
+This command finds the insecure directories reported by `compaudit` and removes group write permissions (`g-w`) from them. You might need to run this with `sudo` if the directories are outside your home directory (e.g., `/usr/local/share/zsh`). If this persists, check the Nix configuration (`apps/zsh.nix` and system modules) for compinit settings (like `ZSH_DISABLE_COMPFIX=true` or disabling system completions).
 
 ### Testing the Configuration
 
