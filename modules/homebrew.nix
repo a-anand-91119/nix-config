@@ -38,6 +38,7 @@
       "font-meslo-lg-nerd-font"
       "font-monaspace-nerd-font"
       "font-noto-sans-symbols-2"
+      "warp"
     ];
     onActivation = {
       cleanup = "zap";
