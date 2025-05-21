@@ -20,6 +20,7 @@
       "openjdk@21"
       "openjdk@23"
       "jenv"
+      "docker-credential-helper"
     ];
     taps = [
       "homebrew/homebrew-cask"
