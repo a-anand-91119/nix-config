@@ -94,3 +94,4 @@ This repository includes automated tests to verify the correctness of the Nix co
   - https://github.com/mcdonc/.nixconfig/blob/master/videos/peruserperhost/script.rst
 - Youtube Example: https://www.youtube.com/watch?v=e8vzW5Y8Gzg
 - MyNixOS: https://mynixos.com/
+- Config Example: https://sandstorm.de/blog/posts/my-first-steps-with-nix-on-mac-osx-as-homebrew-replacement/

@@ -21,6 +21,7 @@
       "openjdk@23"
       "jenv"
       "docker-credential-helper"
+      "libpq"
     ];
     taps = [
       "homebrew/homebrew-cask"
