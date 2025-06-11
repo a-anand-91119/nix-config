@@ -22,6 +22,7 @@
       "jenv"
       "docker-credential-helper"
       "libpq"
+      "yarn"
     ];
     taps = [
       "homebrew/homebrew-cask"
