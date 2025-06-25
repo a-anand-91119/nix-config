@@ -56,6 +56,11 @@ If you encounter a warning like `zsh compinit: insecure directories, run compaud
 compaudit | xargs chmod g-w
 ```
 
+if that doesn't dispaly any directories run this command and then check
+```shell
+chmod -R go-w "$(brew --prefix)/share"
+```
+
 This command finds the insecure directories reported by `compaudit` and removes group write permissions (`g-w`) from them. You might need to run this with `sudo` if the directories are outside your home directory (e.g., `/usr/local/share/zsh`). If this persists, check the Nix configuration (`apps/zsh.nix` and system modules) for compinit settings (like `ZSH_DISABLE_COMPFIX=true` or disabling system completions).
 
 ### Testing the Configuration

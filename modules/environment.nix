@@ -40,7 +40,7 @@
       fzf-git-sh # Bash and zsh key bindings for Git objects, powered by fzf
       #      zsh-fzf-history-search # Replaces Ctrl+R with an fzf-driven select
       asciinema # Terminal session recorder
-      thefuck
+      pay-respects
       yazi # Terminal file manager
       jless # Command-line pager for JSON data
       xh # Friendly and fast tool for sending HTTP requests

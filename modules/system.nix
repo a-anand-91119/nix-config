@@ -1,6 +1,9 @@
 { pkgs, config, ... }:
 
 {
+
+  system.primaryUser = "aanand";
+
   # Default system settings
   system.defaults = {
     dock.autohide = true;

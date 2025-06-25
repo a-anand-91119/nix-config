@@ -14,7 +14,7 @@
     };
     shellAliases = {
       # darwin-rebuild flake
-      dr = "darwin-rebuild switch --flake ~/nix-config";
+      dr = "sudo darwin-rebuild switch --flake ~/nix-config";
       # better ls
       ls = "eza";
       tree = "eza --tree";
@@ -77,6 +77,7 @@
       export FZF_DEFAULT_OPTS="--color=fg:''${fg},bg:''${bg},hl:''${purple},fg+:''${fg},bg+:''${bg_highlight},hl+:''${purple},info:''${blue},prompt:''${cyan},pointer:''${cyan},marker:''${cyan},spinner:''${cyan},header:''${cyan}"
       export FZF_CTRL_T_OPTS="--preview '$show_file_or_dir_preview'"
       export FZF_ALT_C_OPTS="--preview 'eza --tree --color=always {} | head -200'"
+      export ZSH_DISABLE_COMPFIX=true
 
       # adding postgres tools
       export PATH="/opt/homebrew/opt/libpq/bin:$PATH"

@@ -78,8 +78,6 @@
   # Let Home Manager install and manage itself.
   programs = {
     home-manager.enable = true;
-    thefuck.enable = true;
-    thefuck.enableInstantMode = true;
     zoxide.enable = true;
     fastfetch.enable = true;
     ripgrep.enable = true;
