@@ -22,6 +22,7 @@
       "docker-credential-helper"
       "libpq"
       "yarn"
+      "watch"
     ];
     taps = [
       "homebrew/homebrew-cask"
