@@ -23,6 +23,7 @@
       "libpq"
       "yarn"
       "watch"
+      "gitlab-ci-local"
     ];
     taps = [
       "homebrew/homebrew-cask"
