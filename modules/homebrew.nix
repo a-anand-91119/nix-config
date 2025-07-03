@@ -43,6 +43,7 @@
       "font-monaspace-nerd-font"
       "font-noto-sans-symbols-2"
       "warp"
+      "temurin@8" # alternative to openjdk@8 in apple silicon
     ];
     onActivation = {
       cleanup = "zap";
