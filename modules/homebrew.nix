@@ -24,6 +24,7 @@
       "yarn"
       "watch"
       "gitlab-ci-local"
+      "gradle"
     ];
     taps = [
       "homebrew/homebrew-cask"
