@@ -38,6 +38,7 @@
       # kubectl alias
       k = "kubectl";
       dtmux = "tmux kill-server && rm -rf /tmp/tmux-*";
+      d = "docker";
     };
 
     initExtra = ''
