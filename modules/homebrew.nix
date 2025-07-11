@@ -45,6 +45,7 @@
       "font-noto-sans-symbols-2"
       "warp"
       "corretto@8"
+      "visual-studio-code"
     ];
     onActivation = {
       cleanup = "zap";
