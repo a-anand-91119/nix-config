@@ -33,7 +33,6 @@
       curl # Command line tool for transferring data with URL syntax
       jq # Command line JSON processor
       yq # Command line YAML processor
-      vscode # Visual Studio Code
       htop # Interactive process viewer
       jetbrains-mono # JetBrains Mono font
       zsh-fzf-tab # Replace zsh's default completion selection menu with fzf!
