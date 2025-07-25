@@ -24,22 +24,22 @@
           set -g @fuzzback-hide-preview 1
         '';
       }
-      {
-        # https://github.com/fabioluciano/tmux-tokyo-night/tree/v1.10.0?tab=readme-ov-file
-        plugin = tmuxPlugins.mkTmuxPlugin {
-          pluginName = "tmux-tokyo-night";
-          version = "v1.10.0";
-          src = pkgs.fetchFromGitHub {
-            owner = "fabioluciano";
-            repo = "tmux-tokyo-night";
-            rev = "5ce373040f893c3a0d1cb93dc1e8b2a25c94d3da";
-            sha256 = "sha256-9nDgiJptXIP+Hn9UY+QFMgoghw4HfTJ5TZq0f9KVOFg=";
-          };
-        };
-        extraConfig = ''
-          set -g @theme_transparent_status_bar 'true'
-        '';
-      }
+#      {
+#        # https://github.com/fabioluciano/tmux-tokyo-night/tree/v1.10.0?tab=readme-ov-file
+#        plugin = tmuxPlugins.mkTmuxPlugin {
+#          pluginName = "tmux-tokyo-night";
+#          version = "v1.10.0";
+#          src = pkgs.fetchFromGitHub {
+#            owner = "fabioluciano";
+#            repo = "tmux-tokyo-night";
+#            rev = "5ce373040f893c3a0d1cb93dc1e8b2a25c94d3da";
+#            sha256 = "sha256-9nDgiJptXIP+Hn9UY+QFMgoghw4HfTJ5TZq0f9KVOFg=";
+#          };
+#        };
+#        extraConfig = ''
+#          set -g @theme_transparent_status_bar 'true'
+#        '';
+#      }
       {
         plugin = tmuxPlugins.resurrect;
         extraConfig = ''
