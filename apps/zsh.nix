@@ -91,6 +91,8 @@
 
       # adding postgres tools
       export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
+      # Support for goose
+      export PATH="/Users/aanand/.local/bin:$PATH"
 
       # Advanced customization of fzf options via _fzf_comprun function
       # - The first argument to the function is the name of the command.
