@@ -46,6 +46,7 @@
       "warp"
       "corretto@8"
       "visual-studio-code"
+      "bleunlock"
     ];
     onActivation = {
       cleanup = "zap";
