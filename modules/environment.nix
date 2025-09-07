@@ -51,6 +51,7 @@
       devenv # for mananging dev environments
       devbox # Instant, easy, predictable shells and containers
       nixpkgs-fmt
+      calcure
     ];
     # Add Zsh as a valid shell.
     shells = [
