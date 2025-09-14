@@ -12,6 +12,7 @@
    > Also try https://docs.determinate.systems/ native mac os package for determinate linux
 
    > Uninstall this package using `/nix/nix-installer uninstall`
+
 3. Clone this repository
    ```shell
    nix-shell -p git --run 'git clone https://gitlab.notyouraverage.dev/a.anand.91119/nix-config.git nix-config'
