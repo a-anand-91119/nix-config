@@ -79,9 +79,7 @@
           }
         ];
       };
-
       # Expose the package set, including overlays, for convenience.
       darwinPackages = self.darwinConfigurations."Anands-MacBook-Pro--M3-Pro".pkgs;
-
     };
 }
