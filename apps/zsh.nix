@@ -2,7 +2,8 @@
 {
   programs.zsh = {
     enable = true;
-    dotDir = ".config/zsh";
+    dotDir = "zsh";
+
 
     oh-my-zsh = {
       enable = true;

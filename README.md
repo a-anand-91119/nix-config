@@ -29,6 +29,23 @@ Run the following command to update nix
 sudo -i sh -c 'nix-channel --update && nix-env --install --attr nixpkgs.nix && launchctl remove org.nixos.nix-daemon && launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist'
 ```
 
+### Updating the System
+
+With Flakes, updating the system is straightforward. Simply execute the following commands.
+
+```shell
+# Update flake.lock
+nix flake update
+
+# Apply the updates
+darwin-rebuild switch --flake ~/nix-config
+
+# Or to update flake.lock & apply with one command (i.e. same as running "nix flake update" before)
+darwin-rebuild switch --recreate-lock-file --flake ~/nix-config
+```
+
+### Troubleshooting
+
 #### Incase of ssl Error, follow these steps
 
 Check for an old symlink like this:
@@ -48,22 +65,6 @@ sudo ln -s /nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt /etc/ssl/ce
 
 > Ref: https://discourse.nixos.org/t/ssl-ca-cert-error-on-macos/31171/3
 
-### Updating the System
-
-With Flakes, updating the system is straightforward. Simply execute the following commands.
-
-```shell
-# Update flake.lock
-nix flake update
-
-# Apply the updates
-darwin-rebuild switch --flake ~/nix-config
-
-# Or to update flake.lock & apply with one command (i.e. same as running "nix flake update" before)
-darwin-rebuild switch --recreate-lock-file --flake ~/nix-config
-```
-
-### Troubleshooting
 
 **Zsh: `compinit: insecure directories` Warning**
 
