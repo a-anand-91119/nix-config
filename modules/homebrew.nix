@@ -25,6 +25,8 @@
       "watch"
       "gitlab-ci-local"
       "gradle"
+      "ncurses"
+      "opentofu"
     ];
     taps = [
       "homebrew/homebrew-cask"
