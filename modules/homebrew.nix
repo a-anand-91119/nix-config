@@ -27,6 +27,7 @@
       "gradle"
       "ncurses"
       "opentofu"
+      "kubeseal"
     ];
     taps = [
       "homebrew/homebrew-cask"
