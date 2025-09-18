@@ -28,6 +28,7 @@
       "ncurses"
       "opentofu"
       "kubeseal"
+      "maven"
     ];
     taps = [
       "homebrew/homebrew-cask"
