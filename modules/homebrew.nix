@@ -17,7 +17,7 @@
       "openjdk@11"
       "openjdk@17"
       "openjdk@21"
-      "openjdk@24"
+      "openjdk@25"
       "openjdk"
       "jenv"
       "docker-credential-helper"
