@@ -2,8 +2,7 @@
 {
   programs.zsh = {
     enable = true;
-    dotDir = "zsh";
-
+    dotDir = "${config.home.homeDirectory}/.zsh";
 
     oh-my-zsh = {
       enable = true;
