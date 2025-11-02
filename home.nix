@@ -88,6 +88,7 @@
     ./apps/alacritty.nix
     ./apps/bat.nix
     ./apps/btop.nix
+    ./apps/delta.nix
     ./apps/eza.nix
     ./apps/git.nix
     ./apps/helix.nix
