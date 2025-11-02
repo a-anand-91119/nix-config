@@ -127,6 +127,7 @@ This repository includes automated tests to verify the correctness of the Nix co
 - Devbox: https://www.jetify.com/docs/devbox/
 - nix-homebrew: https://github.com/zhaofengli/nix-homebrew
 - nix-darwin: https://github.com/LnL7/nix-darwin
+- Home manager reference: https://nix-community.github.io/home-manager/options.xhtml
 - Mac sample setup: https://github.com/torgeir/nix-darwin
 - Github References:
     - https://github.com/ProfessorFlaw/NixDotfiles/blob/main/configuration.nix
