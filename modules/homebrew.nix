@@ -30,7 +30,7 @@
       "opentofu"
       "kubeseal"
       "maven"
-      "opencode"
+#      "opencode"
     ];
     taps = [
       "homebrew/homebrew-cask"

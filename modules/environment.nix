@@ -52,6 +52,7 @@
       devbox # Instant, easy, predictable shells and containers
       nixpkgs-fmt
       calcure
+      bun
     ];
     # Add Zsh as a valid shell.
     shells = [
