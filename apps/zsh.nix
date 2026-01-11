@@ -93,6 +93,8 @@
       export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
       # Support for goose
       export PATH="/Users/aanand/.local/bin:$PATH"
+      # support for ruby gems
+      export PATH="/opt/homebrew/lib/ruby/gems/3.4.0/bin:$PATH"
 
       # Advanced customization of fzf options via _fzf_comprun function
       # - The first argument to the function is the name of the command.
@@ -116,6 +118,11 @@
       # jenv add $HOMEBREW_PREFIX/opt/openjdk@23
       eval "$(jenv init - --no-rehash)"
       ### ------------ jenv ------------- ###
+
+      ### ------------ rbenv ------------- ###
+      export PATH="$HOME/.rbenv/shims:$PATH"
+      echo 'eval "$(rbenv init -)"' >> ~/.zshrc
+      ### ------------ rbenv ------------- ###
 
       # echo "--- Zsh Profiling Results ---"
       # zprof
