@@ -39,6 +39,9 @@
       k = "kubectl";
       dtmux = "tmux kill-server && rm -rf /tmp/tmux-*";
       d = "docker";
+      cc = "claude";
+      oc = "opencode";
+      gi = "gemini"
     };
 
     initContent = ''
