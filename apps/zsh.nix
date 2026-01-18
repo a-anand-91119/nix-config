@@ -41,7 +41,7 @@
       d = "docker";
       cc = "claude";
       oc = "opencode";
-      gi = "gemini"
+      gi = "gemini";
     };
 
     initContent = ''
