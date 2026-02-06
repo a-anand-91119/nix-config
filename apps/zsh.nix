@@ -42,6 +42,8 @@
       cc = "claude";
       oc = "opencode";
       gi = "gemini";
+      ccu = "npx ccusage@latest";
+      ccum = "npx ccusage@latest monthly";
     };
 
     initContent = ''
