@@ -27,59 +27,82 @@
   };
 
   outputs = inputs@{ self, nix-darwin, nixpkgs, nixpkgs-stable, home-manager, nix-homebrew, homebrew-core, homebrew-cask, homebrew-bundle, ... }:
+    let
+      # Common specialArgs for all machines
+      commonSpecialArgs = {
+        pkgs-stable = import nixpkgs-stable {
+          config.allowUnfree = true;
+        };
+      };
+
+      # Use explicit path concatenation to reference machine directories
+      macbookPath = ./. + "/macbook";
+      macminiPath = ./. + "/mac-mini";
+      sharedPath = ./. + "/shared";
+
+      # Helper function to build darwin configuration
+      buildDarwinConfig = { path, system }:
+        nix-darwin.lib.darwinSystem {
+          inherit system;
+          specialArgs = commonSpecialArgs;
+
+          modules = [
+            (import (sharedPath + "/modules/nix-settings.nix"))
+            (import (sharedPath + "/modules/security.nix"))
+            (import (sharedPath + "/modules/users.nix"))
+            (import (sharedPath + "/modules/programs-base.nix"))
+            (import (path + "/configuration.nix"))
+            {
+              system.configurationRevision = self.rev or self.dirtyRev or null;
+            }
+            home-manager.darwinModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.aanand = import (path + "/home.nix");
+              home-manager.extraSpecialArgs = {
+                inherit sharedPath;
+              };
+            }
+            nix-homebrew.darwinModules.nix-homebrew
+            {
+              nix-homebrew = {
+                enable = true;
+                enableRosetta = false;
+                user = "aanand";
+                taps = {
+                  "homebrew/homebrew-core" = homebrew-core;
+                  "homebrew/homebrew-cask" = homebrew-cask;
+                  "homebrew/homebrew-bundle" = homebrew-bundle;
+                };
+                mutableTaps = false;
+              };
+            }
+          ];
+        };
+    in
     {
       # Build darwin flake using:
-      # $ darwin-rebuild build --flake .#Anands-MacBook-Pro--M3-Pro
-      darwinConfigurations."Anands-MacBook-Pro--M3-Pro" = nix-darwin.lib.darwinSystem {
-        system = "aarch64-darwin";
-        # The `specialArgs` parameter passes the non-default nixpkgs instances to other nix modules
-        specialArgs = {
-          # To use packages from nixpkgs-stable, we configure some parameters for it first
-          pkgs-stable = import nixpkgs-stable {
-            # Add / duplicate the system settings if stable channel cannot be used.
-            # inherit system;
-            # To use Chrome, we need to allow the installation of non-free software.
-            config.allowUnfree = true;
-          };
+      # $ darwin-rebuild switch --flake .#macbook
+      darwinConfigurations = {
+        macbook = buildDarwinConfig {
+          path = macbookPath;
+          system = "aarch64-darwin";
         };
 
-        modules = [
-          ./configuration.nix
-          {
-            # Set Git commit hash for darwin-version.
-            system.configurationRevision = self.rev or self.dirtyRev or null;
-          }
-          home-manager.darwinModules.home-manager
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              users.aanand = import ./home.nix;
-            };
-          }
-          nix-homebrew.darwinModules.nix-homebrew
-          {
-            nix-homebrew = {
-              # Install Homebrew under the default prefix
-              enable = true;
-              # Apple Silicon Only: Also install Homebrew under the default Intel prefix for Rosetta 2
-              enableRosetta = false;
-              # User owning the Homebrew prefix
-              user = "aanand";
-              # Declarative tap management
-              taps = {
-                "homebrew/homebrew-core" = homebrew-core;
-                "homebrew/homebrew-cask" = homebrew-cask;
-                "homebrew/homebrew-bundle" = homebrew-bundle;
-              };
-              # Enable fully-declarative tap management
-              # With mutableTaps disabled, taps can no longer be added imperatively with `brew tap`.
-              mutableTaps = false;
-            };
-          }
-        ];
+        mac-mini = buildDarwinConfig {
+          path = macminiPath;
+          system = "aarch64-darwin";
+        };
       };
+
+      # Backward compatibility for old hostname
+      darwinConfigurations."Anands-MacBook-Pro--M3-Pro" = buildDarwinConfig {
+        path = macbookPath;
+        system = "aarch64-darwin";
+      };
+
       # Expose the package set, including overlays, for convenience.
-      darwinPackages = self.darwinConfigurations."Anands-MacBook-Pro--M3-Pro".pkgs;
+      darwinPackages = self.darwinConfigurations.macbook.pkgs;
     };
 }
