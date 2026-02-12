@@ -31,6 +31,7 @@
       "kubeseal"
       "maven"
       "rbenv"
+      "gh"
     ];
     taps = [
       "homebrew/homebrew-cask"
@@ -52,6 +53,7 @@
       "font-noto-sans-symbols-2"
       "corretto@8"
       "visual-studio-code"
+      "codex"
     ];
     onActivation = {
       cleanup = "zap";
