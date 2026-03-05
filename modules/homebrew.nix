@@ -49,11 +49,12 @@
       "alacritty"
       "freelens"
       "font-meslo-lg-nerd-font"
-      "font-monaspace-nerd-font"
+      "font-monaspice-nerd-font"
       "font-noto-sans-symbols-2"
       "corretto@8"
       "visual-studio-code"
       "codex"
+      "ngrok"
     ];
     onActivation = {
       cleanup = "zap";
