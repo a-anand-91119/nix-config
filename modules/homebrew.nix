@@ -32,6 +32,7 @@
       "maven"
       "rbenv"
       "gh"
+      "wget"
     ];
     taps = [
       "homebrew/homebrew-cask"
