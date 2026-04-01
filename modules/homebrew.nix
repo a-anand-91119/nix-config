@@ -56,6 +56,7 @@
       "visual-studio-code"
       "codex"
       "ngrok"
+      "maccy"
     ];
     onActivation = {
       cleanup = "zap";
