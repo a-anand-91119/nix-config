@@ -33,6 +33,7 @@
       "rbenv"
       "gh"
       "wget"
+      "linkerd"
     ];
     taps = [
       "homebrew/homebrew-cask"
