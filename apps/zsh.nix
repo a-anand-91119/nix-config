@@ -40,6 +40,7 @@
       dtmux = "tmux kill-server && rm -rf /tmp/tmux-*";
       d = "docker";
       cc = "claude";
+      ccd = "claude --dangerously-skip-permissions";
       oc = "opencode";
       gi = "gemini";
       ccu = "npx ccusage@latest";
