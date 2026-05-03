@@ -45,6 +45,9 @@
       gi = "gemini";
       ccu = "npx ccusage@latest";
       ccum = "npx ccusage@latest monthly";
+      # python aliases
+      python = "python3";
+      pip = "pip3";
     };
 
     initContent = ''
@@ -101,6 +104,10 @@
       export PATH="/Users/aanand/.local/bin:$PATH"
       # support for ruby gems
       export PATH="/opt/homebrew/lib/ruby/gems/3.4.0/bin:$PATH"
+      # python framework bin (pip3-installed scripts: graphify, etc.)
+      export PATH="/Library/Frameworks/Python.framework/Versions/Current/bin:$PATH"
+      # python user-base bin (pip3 install --user)
+      export PATH="$HOME/Library/Python/3.14/bin:$PATH"
 
       # Advanced customization of fzf options via _fzf_comprun function
       # - The first argument to the function is the name of the command.
