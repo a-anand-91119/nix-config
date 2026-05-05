@@ -55,7 +55,6 @@
       "font-noto-sans-symbols-2"
       "corretto@8"
       "visual-studio-code"
-      "codex"
       "ngrok"
       "maccy"
     ];
