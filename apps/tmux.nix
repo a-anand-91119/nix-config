@@ -59,6 +59,8 @@
     ];
 
     extraConfig = ''
+      set -g focus-events on
+
       set -ga terminal-overrides ",xterm-256color:RGB"
 
       # Refresh tmux config with r
