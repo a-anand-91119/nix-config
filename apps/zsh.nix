@@ -134,8 +134,17 @@
 
       ### ------------ rbenv ------------- ###
       export PATH="$HOME/.rbenv/shims:$PATH"
-      echo 'eval "$(rbenv init -)"' >> ~/.zshrc
+      eval "$(rbenv init -)"
       ### ------------ rbenv ------------- ###
+
+      ### ------------ git-ai ------------- ###
+      export PATH="$HOME/.git-ai/bin:$PATH"
+      ### ------------ git-ai ------------- ###
+
+      ### ------------ gcloud ------------- ###
+      if [ -f "$HOME/Installs/google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/Installs/google-cloud-sdk/path.zsh.inc"; fi
+      if [ -f "$HOME/Installs/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/Installs/google-cloud-sdk/completion.zsh.inc"; fi
+      ### ------------ gcloud ------------- ###
 
       # echo "--- Zsh Profiling Results ---"
       # zprof
