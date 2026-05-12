@@ -158,11 +158,6 @@
       # opencode
       export PATH="$HOME/.opencode/bin:$PATH"
 
-      # claude code
-      export DISABLE_TELEMETRY=true
-      export DISABLE_ERROR_REPORTING=true
-      export DISABLE_FEEDBACK_COMMAND=1
-      export USER_TYPE=ant
     '';
   };
 }
