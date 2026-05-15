@@ -22,11 +22,15 @@
       url = "github:homebrew/homebrew-bundle";
       flake = false;
     };
+    homebrew-xykong = {
+      url = "github:xykong/homebrew-tap";
+      flake = false;
+    };
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = inputs@{ self, nix-darwin, nixpkgs, nixpkgs-stable, home-manager, nix-homebrew, homebrew-core, homebrew-cask, homebrew-bundle, ... }:
+  outputs = inputs@{ self, nix-darwin, nixpkgs, nixpkgs-stable, home-manager, nix-homebrew, homebrew-core, homebrew-cask, homebrew-bundle, homebrew-xykong, ... }:
     {
       # Build darwin flake using:
       # $ darwin-rebuild build --flake .#Anands-MacBook-Pro--M3-Pro
@@ -71,6 +75,7 @@
                 "homebrew/homebrew-core" = homebrew-core;
                 "homebrew/homebrew-cask" = homebrew-cask;
                 "homebrew/homebrew-bundle" = homebrew-bundle;
+                "xykong/homebrew-tap" = homebrew-xykong;
               };
               # Enable fully-declarative tap management
               # With mutableTaps disabled, taps can no longer be added imperatively with `brew tap`.

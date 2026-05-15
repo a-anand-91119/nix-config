@@ -38,6 +38,8 @@
     taps = [
       "homebrew/homebrew-cask"
       "homebrew/homebrew-core"
+      "homebrew/homebrew-bundle"
+      "xykong/tap"
     ];
     masApps = {
 #      Amphetamine = 937984704;
@@ -57,6 +59,8 @@
       "visual-studio-code"
       "ngrok"
       "maccy"
+      "dockdoor"
+      "xykong/tap/flux-markdown"
     ];
     onActivation = {
       cleanup = "zap";
