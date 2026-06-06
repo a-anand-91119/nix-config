@@ -92,6 +92,7 @@
     ./apps/eza.nix
     ./apps/git.nix
     ./apps/helix.nix
+    ./apps/pkg-managers
     ./apps/zsh.nix
     ./apps/tmux.nix
   ];

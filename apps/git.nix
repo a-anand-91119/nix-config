@@ -7,8 +7,6 @@
         email = "a.anand.91119@gmail.com";
         name = "A Anand";
       };
-    };
-    settings = {
       merge = {
         conflictstyle = "diff3";
       };

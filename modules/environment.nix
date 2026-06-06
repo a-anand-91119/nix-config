@@ -53,6 +53,7 @@
       nixpkgs-fmt
       calcure
       bun
+      herdr # Terminal multiplexer for AI agents (from herdr flake overlay)
     ];
     # Add Zsh as a valid shell.
     shells = [

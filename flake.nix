@@ -28,9 +28,15 @@
     };
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+
+    # herdr: terminal workspace manager for AI coding agents (built from source)
+    herdr = {
+      url = "github:ogulcancelik/herdr";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = inputs@{ self, nix-darwin, nixpkgs, nixpkgs-stable, home-manager, nix-homebrew, homebrew-core, homebrew-cask, homebrew-bundle, homebrew-xykong, ... }:
+  outputs = inputs@{ self, nix-darwin, nixpkgs, nixpkgs-stable, home-manager, nix-homebrew, homebrew-core, homebrew-cask, homebrew-bundle, homebrew-xykong, herdr, ... }:
     {
       # Build darwin flake using:
       # $ darwin-rebuild build --flake .#Anands-MacBook-Pro--M3-Pro
@@ -49,6 +55,8 @@
 
         modules = [
           ./configuration.nix
+          # Exposes herdr as pkgs.herdr (consumed in modules/environment.nix)
+          { nixpkgs.overlays = [ herdr.overlays.default ]; }
           {
             # Set Git commit hash for darwin-version.
             system.configurationRevision = self.rev or self.dirtyRev or null;

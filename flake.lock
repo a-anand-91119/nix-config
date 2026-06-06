@@ -17,6 +17,26 @@
         "type": "github"
       }
     },
+    "herdr": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1780695679,
+        "narHash": "sha256-FawVQv3UcI6SK9egWmLE5ZJZeh+eg4h4Q2CjEnOL9k8=",
+        "owner": "ogulcancelik",
+        "repo": "herdr",
+        "rev": "b7619db085eb4054a071b51159eda65d6b60f3fe",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ogulcancelik",
+        "repo": "herdr",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -173,6 +193,7 @@
     },
     "root": {
       "inputs": {
+        "herdr": "herdr",
         "home-manager": "home-manager",
         "homebrew-bundle": "homebrew-bundle",
         "homebrew-cask": "homebrew-cask",

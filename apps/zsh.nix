@@ -48,6 +48,19 @@
       # python aliases
       python = "python3";
       pip = "pip3";
+
+      # --- Socket Firewall (sfw) wrappers ---
+      # Routes package-manager network traffic through sfw for malware scanning.
+      # Aliases only expand in interactive shells — scripts/Makefiles bypass this.
+      #
+      # Officially supported by sfw Free:
+      npm   = "sfw npm";
+      pnpm  = "sfw pnpm";
+      yarn  = "sfw yarn";
+      npx   = "sfw npx";
+      uv    = "sfw uv";
+      cargo = "sfw cargo";
+      pip3  = "sfw pip3"; # `pip` already → `pip3`, so it cascades through.
     };
 
     initContent = ''
