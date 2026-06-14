@@ -41,6 +41,8 @@
       d = "docker";
       cc = "claude";
       ccd = "claude --dangerously-skip-permissions";
+      cx = "codex";
+      cxd = "codex --yolo";
       oc = "opencode";
       gi = "gemini";
       ccu = "npx ccusage@latest";
