@@ -34,6 +34,7 @@
       "gh"
       "wget"
       "linkerd"
+      "glab"
     ];
     taps = [
       "homebrew/homebrew-cask"
