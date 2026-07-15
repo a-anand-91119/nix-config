@@ -35,6 +35,7 @@
       "wget"
       "linkerd"
       "glab"
+      "cliproxyapi"
     ];
     taps = [
       "homebrew/homebrew-cask"
