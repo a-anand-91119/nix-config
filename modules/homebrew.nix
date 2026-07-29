@@ -63,6 +63,7 @@
       "maccy"
       "dockdoor"
       "xykong/tap/flux-markdown"
+      "t3-code"
     ];
     onActivation = {
       cleanup = "zap";

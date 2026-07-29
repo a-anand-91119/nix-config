@@ -14,7 +14,7 @@
     };
     shellAliases = {
       # darwin-rebuild flake
-      dr = "sudo darwin-rebuild switch --flake ~/nix-config";
+      dr = "sudo darwin-rebuild switch --flake ~/nix-config/#Anands-MacBook-Pro--M3-Pro";
       # better ls
       ls = "eza";
       tree = "eza --tree";
