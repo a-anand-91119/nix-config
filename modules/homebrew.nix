@@ -36,6 +36,7 @@
       "linkerd"
       "glab"
       "cliproxyapi"
+      "mole"
     ];
     taps = [
       "homebrew/homebrew-cask"
