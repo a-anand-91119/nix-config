@@ -62,7 +62,6 @@
       "visual-studio-code"
       "ngrok"
       "maccy"
-      "dockdoor"
       "xykong/tap/flux-markdown"
       "t3-code"
     ];
