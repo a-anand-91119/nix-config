@@ -37,6 +37,7 @@
       "glab"
       "cliproxyapi"
       "mole"
+      "rustup"
     ];
     taps = [
       "homebrew/homebrew-cask"

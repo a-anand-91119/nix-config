@@ -125,6 +125,8 @@
       export PATH="/Library/Frameworks/Python.framework/Versions/Current/bin:$PATH"
       # python user-base bin (pip3 install --user)
       export PATH="$HOME/Library/Python/3.14/bin:$PATH"
+      # support for rust
+      export PATH="$HOME/.cargo/bin:$PATH"
 
       # Advanced customization of fzf options via _fzf_comprun function
       # - The first argument to the function is the name of the command.
