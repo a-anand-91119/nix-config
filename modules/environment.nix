@@ -29,7 +29,6 @@
       pam-reattach
       nerd-fonts.fira-code
       lazydocker # Docker TUI
-      lazygit # Git TUI
       curl # Command line tool for transferring data with URL syntax
       jq # Command line JSON processor
       yq # Command line YAML processor
@@ -37,9 +36,7 @@
       jetbrains-mono # JetBrains Mono font
       zsh-fzf-tab # Replace zsh's default completion selection menu with fzf!
       fzf-git-sh # Bash and zsh key bindings for Git objects, powered by fzf
-      #      zsh-fzf-history-search # Replaces Ctrl+R with an fzf-driven select
       asciinema # Terminal session recorder
-      pay-respects
       yazi # Terminal file manager
       jless # Command-line pager for JSON data
       xh # Friendly and fast tool for sending HTTP requests
@@ -51,9 +48,10 @@
       devenv # for mananging dev environments
       devbox # Instant, easy, predictable shells and containers
       nixpkgs-fmt
-      calcure
       bun
-      herdr # Terminal multiplexer for AI agents (from herdr flake overlay)
+      uv
+      fnm
+      julia
     ];
     # Add Zsh as a valid shell.
     shells = [

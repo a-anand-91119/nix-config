@@ -118,7 +118,7 @@
       # adding postgres tools
       export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
       # Support for goose
-      export PATH="/Users/aanand/.local/bin:$PATH"
+      export PATH="$HOME/.local/bin:$PATH"
       # support for ruby gems
       export PATH="/opt/homebrew/lib/ruby/gems/3.4.0/bin:$PATH"
       # python framework bin (pip3-installed scripts: graphify, etc.)
@@ -127,6 +127,16 @@
       export PATH="$HOME/Library/Python/3.14/bin:$PATH"
       # support for rust
       export PATH="$HOME/.cargo/bin:$PATH"
+     # support for fnm
+     export PATH="$HOME/.local/state/fnm_multishells/78566_1789717865463/bin":$PATH
+     export FNM_MULTISHELL_PATH="$HOME/.local/state/fnm_multishells/78566_1789717865463"
+     export FNM_VERSION_FILE_STRATEGY="local"
+     export FNM_DIR="$HOME/.local/share/fnm"
+     export FNM_LOGLEVEL="info"
+     export FNM_NODE_DIST_MIRROR="https://nodejs.org/dist"
+     export FNM_COREPACK_ENABLED="false"
+     export FNM_RESOLVE_ENGINES="true"
+     export FNM_ARCH="arm64"
 
       # Advanced customization of fzf options via _fzf_comprun function
       # - The first argument to the function is the name of the command.
