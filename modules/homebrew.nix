@@ -65,6 +65,7 @@
       "maccy"
       "xykong/tap/flux-markdown"
       "t3-code"
+      "macpacker"
     ];
     onActivation = {
       cleanup = "zap";
