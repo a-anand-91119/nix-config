@@ -1,43 +1,17 @@
-{ config, pkgs, ... }:
+{ lib, pkgs, ... }:
 {
+  # Personal-only integrations. The work profile never imports this module.
   programs.zsh = {
-    enable = true;
-    dotDir = "${config.home.homeDirectory}/.zsh";
-
+    syntaxHighlighting.enable = true;
     oh-my-zsh = {
       enable = true;
-      theme = "robbyrussell";
-      plugins = [
-        "git"
-        "sublime"
-      ];
+      # Powerlevel10k is loaded once by the shared terminal module.
+      theme = "";
+      plugins = [ "git" "sublime" ];
     };
     shellAliases = {
-      # darwin-rebuild flake
-      dr = "sudo darwin-rebuild switch --flake ~/nix-config/#Anands-MacBook-Pro--M3-Pro";
-      # better ls
-      ls = "eza";
-      tree = "eza --tree";
-      lla = "ls -la";
-      cat = "bat";
-      ccat = "bat --paging=never";
-      cd = "z";
-      # git related alias
-      gaa = "git add .";
-      ga = "git add";
-      gc = "git commit";
-      gst = "git status";
-      gs = "git status";
-      gd = "git diff";
-      gl = "git pull";
-      gpl = "git pull";
-      gp = "git push";
       gpcs = "git push -o ci.skip";
-      gpuf = "git push --force";
-      gatc = "git commit --amend --no-edit";
-      # kubectl alias
       k = "kubectl";
-      dtmux = "tmux kill-server && rm -rf /tmp/tmux-*";
       d = "docker";
       cc = "claude";
       ccd = "claude --dangerously-skip-permissions";
@@ -49,140 +23,42 @@
       gi = "gemini";
       ccu = "npx ccusage@latest";
       ccum = "npx ccusage@latest monthly";
-      # python aliases
       python = "python3";
       pip = "pip3";
-
-      # --- Socket Firewall (sfw) wrappers ---
-      # Routes package-manager network traffic through sfw for malware scanning.
-      # Aliases only expand in interactive shells — scripts/Makefiles bypass this.
-      #
-      # Officially supported by sfw Free:
-      npm   = "sfw npm";
-      pnpm  = "sfw pnpm";
-      yarn  = "sfw yarn";
-      npx   = "sfw npx";
-      uv    = "sfw uv";
+      # These interactive-only wrappers do not affect scripts/Makefiles.
+      npm = "sfw npm";
+      pnpm = "sfw pnpm";
+      yarn = "sfw yarn";
+      npx = "sfw npx";
+      uv = "sfw uv";
       cargo = "sfw cargo";
-      pip3  = "sfw pip3"; # `pip` already → `pip3`, so it cascades through.
+      pip3 = "sfw pip3";
     };
+    initContent = lib.mkOrder 1100 ''
+      source ${pkgs.zsh-you-should-use}/share/zsh/plugins/you-should-use/you-should-use.plugin.zsh
+      source ${pkgs.fzf-git-sh}/share/fzf-git-sh/fzf-git.sh
+      export YSU_MESSAGE_POSITION="after"
 
-    initContent = ''
-      # zmodload zsh/zprof
-
-      # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-      # Initialization code that may require console input (password prompts, [y/n]
-      # confirmations, etc.) must go above this block; everything else may go below.
-      if [[ -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
-        source "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
-      fi
-
-      # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-      [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-      ### ------------ FZF ------------- ###
-      # Set up fzf key bindings and fuzzy completion
-      eval "$(fzf --zsh)"
-
-      export FZF_DEFAULT_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git"
-      export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-      export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude .git"
-
-      # Use fd (https://github.com/sharkdp/fd) for listing path candidates.
-      # - The first argument to the function ($1) is the base path to start traversal
-      # - See the source code (completion.{bash,zsh}) for the details.
-      _fzf_compgen_path() {
-        fd --hidden --exclude .git . "$1"
-      }
-
-      # Use fd to generate the list for directory completion
-      _fzf_compgen_dir() {
-        fd --type=d --hidden --exclude .git . "$1"
-      }
-
-      # --- setup fzf theme ---
-      fg="#CBE0F0"
-      bg="#011628"
-      bg_highlight="#143652"
-      purple="#B388FF"
-      blue="#06BCE4"
-      cyan="#2CF9ED"
-
-      show_file_or_dir_preview="if [ -d {} ]; then eza --tree --color=always {} | head -200; else bat -n --color=always --line-range :500 {}; fi"
-
-      export FZF_DEFAULT_OPTS="--color=fg:''${fg},bg:''${bg},hl:''${purple},fg+:''${fg},bg+:''${bg_highlight},hl+:''${purple},info:''${blue},prompt:''${cyan},pointer:''${cyan},marker:''${cyan},spinner:''${cyan},header:''${cyan}"
-      export FZF_CTRL_T_OPTS="--preview '$show_file_or_dir_preview'"
-      export FZF_ALT_C_OPTS="--preview 'eza --tree --color=always {} | head -200'"
-      export ZSH_DISABLE_COMPFIX=true
-
-      # adding postgres tools
       export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
-      # Support for goose
-      export PATH="$HOME/.local/bin:$PATH"
-      # support for ruby gems
       export PATH="/opt/homebrew/lib/ruby/gems/3.4.0/bin:$PATH"
-      # python framework bin (pip3-installed scripts: graphify, etc.)
       export PATH="/Library/Frameworks/Python.framework/Versions/Current/bin:$PATH"
-      # python user-base bin (pip3 install --user)
       export PATH="$HOME/Library/Python/3.14/bin:$PATH"
-      # support for rust
       export PATH="$HOME/.cargo/bin:$PATH"
-     # support for fnm
-     export PATH="$HOME/.local/state/fnm_multishells/78566_1789717865463/bin":$PATH
-     export FNM_MULTISHELL_PATH="$HOME/.local/state/fnm_multishells/78566_1789717865463"
-     export FNM_VERSION_FILE_STRATEGY="local"
-     export FNM_DIR="$HOME/.local/share/fnm"
-     export FNM_LOGLEVEL="info"
-     export FNM_NODE_DIST_MIRROR="https://nodejs.org/dist"
-     export FNM_COREPACK_ENABLED="false"
-     export FNM_RESOLVE_ENGINES="true"
-     export FNM_ARCH="arm64"
-
-      # Advanced customization of fzf options via _fzf_comprun function
-      # - The first argument to the function is the name of the command.
-      # - You should make sure to pass the rest of the arguments to fzf.
-      _fzf_comprun() {
-        local command=$1
-        shift
-
-        case "$command" in
-          cd)           fzf --preview 'eza --tree --color=always {} | head -200' "$@" ;;
-          export|unset) fzf --preview "eval 'echo $'{}"         "$@" ;;
-          ssh)          fzf --preview 'dig {}'                   "$@" ;;
-          *)            fzf --preview "$show_file_or_dir_preview" "$@" ;;
-        esac
-      }
-
-      ### ------------ FZF ------------- ###
-
-      ### ------------ jenv ------------- ###
-      export PATH="$HOME/.jenv/bin:$PATH"
-      # jenv add $HOMEBREW_PREFIX/opt/openjdk@23
-      eval "$(jenv init - --no-rehash)"
-      ### ------------ jenv ------------- ###
-
-      ### ------------ rbenv ------------- ###
-      export PATH="$HOME/.rbenv/shims:$PATH"
-      eval "$(rbenv init -)"
-      ### ------------ rbenv ------------- ###
-
-      ### ------------ gcloud ------------- ###
+      if command -v fnm >/dev/null 2>&1; then
+        eval "$(fnm env --use-on-cd --shell zsh)"
+      fi
+      if command -v jenv >/dev/null 2>&1; then
+        export PATH="$HOME/.jenv/bin:$PATH"
+        eval "$(jenv init - --no-rehash)"
+      fi
+      if command -v rbenv >/dev/null 2>&1; then
+        export PATH="$HOME/.rbenv/shims:$PATH"
+        eval "$(rbenv init -)"
+      fi
       if [ -f "$HOME/Installs/google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/Installs/google-cloud-sdk/path.zsh.inc"; fi
       if [ -f "$HOME/Installs/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/Installs/google-cloud-sdk/completion.zsh.inc"; fi
-      ### ------------ gcloud ------------- ###
-
-      # echo "--- Zsh Profiling Results ---"
-      # zprof
-      # echo "-----------------------------"
-
-
-      # Locale Changes
-      export LC_ALL=en_US.UTF-8
       export LANG=en_US.UTF-8
-
-      # opencode
       export PATH="$HOME/.opencode/bin:$PATH"
-
     '';
   };
 }

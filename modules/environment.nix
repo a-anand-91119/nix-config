@@ -1,40 +1,21 @@
-{ pkgs, config, ... }:
+{ pkgs, ... }:
 
 {
   environment = {
-    # List packages installed in system profile. To search by name, run:
-    # $ nix-env -qaP | grep wget
+    # Personal extras only. Shared user tools are owned by Home Manager.
     systemPackages = with pkgs; [
       mkalias
       stow
       mas
-      zsh
-      bat
-      btop
-      tmux
-      eza
       bc
-      coreutils
-      gawk
-      git
       nowplaying-cli
-      fzf # Fuzzy finder
-      fd # Better find
-      zsh-powerlevel10k
       meslo-lg
-      zsh-autosuggestions
       zsh-you-should-use
-      zoxide # Directory jump tool (z)
-      delta # Terminal git diff viewer with syntax highlighting
       pam-reattach
       nerd-fonts.fira-code
       lazydocker # Docker TUI
-      curl # Command line tool for transferring data with URL syntax
-      jq # Command line JSON processor
-      yq # Command line YAML processor
       htop # Interactive process viewer
       jetbrains-mono # JetBrains Mono font
-      zsh-fzf-tab # Replace zsh's default completion selection menu with fzf!
       fzf-git-sh # Bash and zsh key bindings for Git objects, powered by fzf
       asciinema # Terminal session recorder
       yazi # Terminal file manager
@@ -47,19 +28,11 @@
       dust # Like du but more intuitive
       devenv # for mananging dev environments
       devbox # Instant, easy, predictable shells and containers
-      nixpkgs-fmt
       bun
       uv
       fnm
       julia
     ];
-    # Add Zsh as a valid shell.
-    shells = [
-      pkgs.zsh
-    ];
-
-    # Custom aliases in the shell environment
-    shellAliases = { };
   };
 
 

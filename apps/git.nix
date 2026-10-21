@@ -1,11 +1,11 @@
-{ config, pkgs, ... }:
+{ host, ... }:
 {
   programs.git = {
     enable = true;
     settings = {
       user = {
-        email = "a.anand.91119@gmail.com";
-        name = "A Anand";
+        inherit (host.git) email name;
+        useConfigOnly = true;
       };
       merge = {
         conflictstyle = "diff3";
