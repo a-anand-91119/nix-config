@@ -1,8 +1,8 @@
-{ pkgs, config, ... }:
+{ host, ... }:
 
 {
   homebrew = {
-    enable = true;
+    enable = host.manageHomebrew;
     brews = [
       "gsed"
       "kubectl"
@@ -39,18 +39,12 @@
       "mole"
       "rustup"
     ];
-    taps = [
-      "homebrew/homebrew-cask"
-      "homebrew/homebrew-core"
-      "homebrew/homebrew-bundle"
-      "xykong/tap"
-    ];
     masApps = {
-#      Amphetamine = 937984704;
-#      Tailscale = 1475387142;
-#      LocalSend = 1661733229;
-#      WhatsApp = 310633997;
-#      Telegram = 747648890;
+      #      Amphetamine = 937984704;
+      #      Tailscale = 1475387142;
+      #      LocalSend = 1661733229;
+      #      WhatsApp = 310633997;
+      #      Telegram = 747648890;
     };
     casks = [
       "the-unarchiver"

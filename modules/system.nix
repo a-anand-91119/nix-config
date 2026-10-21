@@ -1,9 +1,8 @@
-{ pkgs, config, ... }:
+{ pkgs, config, host, ... }:
 
 {
 
   system = {
-    primaryUser = "aanand";
     # Default system settings
     defaults = {
       dock.autohide = true;
@@ -12,7 +11,7 @@
       loginwindow.LoginwindowText = "Not Your Average Dev";
       # Finder display options are: Nlsv (list), clmv (column), Flwv (cover flow), icnv (icon view)
       finder.FXPreferredViewStyle = "clmv";
-      screencapture.location = "~/Pictures/Screenshots";
+      screencapture.location = "${host.homeDirectory}/Pictures/Screenshots";
     };
 
     # Nix-darwin does not link installed applications to the user environment. This means apps will not show up
@@ -31,12 +30,17 @@
         echo "setting up /Applications..." >&2
         rm -rf /Applications/Nix\ Apps
         mkdir -p /Applications/Nix\ Apps
-        find ${env}/Applications -maxdepth 1 -type l -exec readlink '{}' + |
-        while read -r src; do
-          app_name=$(basename "$src")
-          echo "copying $src" >&2
-          ${pkgs.mkalias}/bin/mkalias "$src" "/Applications/Nix Apps/$app_name"
-        done
+        if [ -d ${env}/Applications ]; then
+          find ${env}/Applications -maxdepth 1 -type l -exec readlink '{}' + |
+          while read -r src; do
+            app_name=$(basename "$src")
+            echo "copying $src" >&2
+            ${pkgs.mkalias}/bin/mkalias "$src" "/Applications/Nix Apps/$app_name"
+          done
+        fi
       '';
+    activationScripts.postActivation.text = ''
+      install -d -o ${pkgs.lib.escapeShellArg host.username} ${pkgs.lib.escapeShellArg "${host.homeDirectory}/Pictures/Screenshots"}
+    '';
   };
 }

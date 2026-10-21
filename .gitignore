@@ -3,3 +3,11 @@ __pycache__
 .DS_Store
 
 .idea
+
+# Nix build outputs and machine-local credentials.
+result
+result-*
+.env
+.env.*
+!.env.example
+secrets/

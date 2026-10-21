@@ -1,10 +1,11 @@
-{ pkgs, config, ... }:
+{ host, ... }:
 
 {
   # User accounts and home directory
-  users.users.aanand = {
-    name = "aanand";
-    home = "/Users/aanand";
+  system.primaryUser = host.username;
+  users.users.${host.username} = {
+    name = host.username;
+    home = host.homeDirectory;
   };
 
 }

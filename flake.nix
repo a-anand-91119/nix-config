@@ -36,63 +36,25 @@
     };
   };
 
-  outputs = inputs@{ self, nix-darwin, nixpkgs, nixpkgs-stable, home-manager, nix-homebrew, homebrew-core, homebrew-cask, homebrew-bundle, homebrew-xykong, herdr, ... }:
+  outputs = inputs@{ self, ... }:
+    let
+      mkHost = import ./lib/mk-host.nix { inherit inputs; };
+      personal = mkHost (import ./hosts/personal-macbook.nix);
+      work = mkHost (import ./hosts/work-mini.nix);
+    in
     {
-      # Build darwin flake using:
-      # $ darwin-rebuild build --flake .#Anands-MacBook-Pro--M3-Pro
-      darwinConfigurations."Anands-MacBook-Pro--M3-Pro" = nix-darwin.lib.darwinSystem {
-        system = "aarch64-darwin";
-        # The `specialArgs` parameter passes the non-default nixpkgs instances to other nix modules
-        specialArgs = {
-          # To use packages from nixpkgs-stable, we configure some parameters for it first
-          pkgs-stable = import nixpkgs-stable {
-            # Add / duplicate the system settings if stable channel cannot be used.
-            # inherit system;
-            # To use Chrome, we need to allow the installation of non-free software.
-            config.allowUnfree = true;
-          };
-        };
-
-        modules = [
-          ./configuration.nix
-          # Exposes herdr as pkgs.herdr (consumed in modules/environment.nix)
-          { nixpkgs.overlays = [ herdr.overlays.default ]; }
-          {
-            # Set Git commit hash for darwin-version.
-            system.configurationRevision = self.rev or self.dirtyRev or null;
-          }
-          home-manager.darwinModules.home-manager
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              users.aanand = import ./home.nix;
-            };
-          }
-          nix-homebrew.darwinModules.nix-homebrew
-          {
-            nix-homebrew = {
-              # Install Homebrew under the default prefix
-              enable = true;
-              # Apple Silicon Only: Also install Homebrew under the default Intel prefix for Rosetta 2
-              enableRosetta = false;
-              # User owning the Homebrew prefix
-              user = "aanand";
-              # Declarative tap management
-              taps = {
-                "homebrew/homebrew-core" = homebrew-core;
-                "homebrew/homebrew-cask" = homebrew-cask;
-                "homebrew/homebrew-bundle" = homebrew-bundle;
-                "xykong/homebrew-tap" = homebrew-xykong;
-              };
-              # Enable fully-declarative tap management
-              # With mutableTaps disabled, taps can no longer be added imperatively with `brew tap`.
-              mutableTaps = false;
-            };
-          }
-        ];
+      darwinConfigurations = {
+        "Anands-MacBook-Pro--M3-Pro" = personal;
+        work-mini = work;
       };
-      # Expose the package set, including overlays, for convenience.
-      darwinPackages = self.darwinConfigurations."Anands-MacBook-Pro--M3-Pro".pkgs;
+
+      # Preserve the existing convenience output and personal overlay.
+      darwinPackages = personal.pkgs;
+
+      checks.aarch64-darwin = {
+        personal-macbook = personal.system;
+        work-mini = work.system;
+        work-selection = import ./tests/work-profile.nix { inherit (work) config pkgs; };
+      };
     };
 }

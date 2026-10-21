@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ host, lib, ... }:
 {
   # Allow install of non open-source apps
   nixpkgs.config.allowUnfree = true;
@@ -8,7 +8,8 @@
 
   nix = {
     # Auto upgrade nix package and the daemon service.
-    enable = true;
+    enable = host.manageNix;
+  } // lib.optionalAttrs host.manageNix {
     # Necessary for using flakes on this system.
     # enable flakes globally
     settings.experimental-features = [ "nix-command" "flakes" ];
@@ -30,7 +31,7 @@
   system.stateVersion = 5;
 
   # The platform the configuration will be used on.
-  nixpkgs.hostPlatform = "aarch64-darwin";
+  nixpkgs.hostPlatform = host.system;
 
 
 }
