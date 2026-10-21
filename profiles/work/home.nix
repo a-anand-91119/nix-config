@@ -11,6 +11,8 @@
     pkgs.glab
     # Python package and project manager.
     pkgs.uv
+    # JavaScript runtime (22.x LTS line for project tooling).
+    pkgs.nodejs_22
   ];
 
   # Install the app through Nix; the Homebrew cask is disabled by Gatekeeper policy.

@@ -93,6 +93,7 @@ assert lib.assertMsg (lib.all (name: !(builtins.hasAttr name home.home.file)) om
 assert lib.assertMsg (pluginPackages == [ pkgs.tmuxPlugins.sensible ]) "work-mini must have only tmux sensible";
 assert lib.assertMsg (lib.elem pkgs.glab home.home.packages) "work-mini must install the GitLab CLI";
 assert lib.assertMsg (lib.elem pkgs.uv home.home.packages) "work-mini must install uv";
+assert lib.assertMsg (lib.elem pkgs.nodejs_22 home.home.packages) "work-mini must install Node.js";
 assert lib.assertMsg (home.programs.alacritty.package == pkgs.alacritty && lib.elem pkgs.alacritty home.home.packages)
   "Home Manager must install the work Alacritty app through Nix";
 assert lib.assertMsg (!home.programs.zsh.oh-my-zsh.enable) "work-mini must not inherit personal Oh My Zsh setup";

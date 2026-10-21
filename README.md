@@ -14,13 +14,13 @@ Both use `aarch64-darwin`. The work host is intended for the M5 Mac mini with
 
 - Shell: Zsh, Powerlevel10k, autosuggestions, fzf-tab and fzf.
 - CLI: bat, btop, tmux, eza, coreutils, gawk, Git, fd, zoxide, Delta, curl,
-  jq, yq, ripgrep, direnv, nixpkgs-fmt, glab and uv.
+  jq, yq, ripgrep, direnv, nixpkgs-fmt, glab, uv and Node.js 22.
 - Management/support: Home Manager and mkalias.
 - Terminal app: Alacritty through Nix/Home Manager.
 - Brew cask: Meslo LG Nerd Font.
 - Tmux plugin: `sensible` only.
 
-There are no work Brew formulae. Node, Python, Java, Ruby, Rust, Docker,
+There are no work Brew formulae. Python, Java, Ruby, Rust, Docker,
 Kubernetes, AI apps, extra fonts, session-persistence plugins and package-manager
 wrappers are omitted. Normal package dependencies are still installed.
 Use project environments or select an additional feature when a project needs a
