@@ -36,6 +36,8 @@ in
     pkgs.podman-compose
     # Stores registry logins in the macOS Keychain.
     pkgs.docker-credential-helpers
+    # Terminal UI for containers; reaches Podman through DOCKER_HOST.
+    pkgs.lazydocker
     docker
     docker-compose
     pm

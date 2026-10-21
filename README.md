@@ -15,7 +15,7 @@ Both use `aarch64-darwin`. The work host is intended for the M5 Mac mini with
 - Shell: Zsh, Powerlevel10k, autosuggestions, fzf-tab and fzf.
 - CLI: bat, btop, tmux, eza, coreutils, gawk, Git, fd, zoxide, Delta, curl,
   jq, yq, ripgrep, direnv, nixpkgs-fmt, glab, uv, Node.js 22 and pnpm.
-- Containers: Podman and podman-compose, with `docker`/`docker-compose`
+- Containers: Podman, podman-compose and lazydocker, with `docker`/`docker-compose`
   commands and a `pm` helper (see [Containers on work-mini](#containers-on-work-mini)).
 - Management/support: Home Manager and mkalias.
 - Terminal app: Alacritty through Nix/Home Manager.
@@ -48,6 +48,9 @@ container stores, so images pulled in one mode are not visible in the other.
 works. `DOCKER_HOST` points at the machine's API socket under `$TMPDIR` for
 tools that talk to the socket directly (Testcontainers, docker-py). Apps
 launched from Spotlight do not inherit it.
+
+Run `lazydocker` for a terminal UI over the same containers; it uses `DOCKER_HOST`,
+so start the machine with `pm up` first.
 
 `podman login <registry>` (or `docker login`) stores credentials in the macOS
 Keychain through `~/.config/containers/registries.conf`. Use a GitLab personal

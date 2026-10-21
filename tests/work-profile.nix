@@ -16,7 +16,6 @@ let
     "rustup"
     "zsh-you-should-use"
     "fzf-git-sh"
-    "lazydocker"
   ];
   omittedAliases = [
     "npm"
@@ -98,6 +97,7 @@ assert lib.assertMsg (lib.elem pkgs.pnpm home.home.packages) "work-mini must ins
 assert lib.assertMsg (lib.elem pkgs.podman home.home.packages) "work-mini must install Podman";
 assert lib.assertMsg (lib.elem pkgs.podman-compose home.home.packages) "work-mini must install podman-compose";
 assert lib.assertMsg (lib.elem pkgs.docker-credential-helpers home.home.packages) "work-mini must install the Keychain credential helper";
+assert lib.assertMsg (lib.elem pkgs.lazydocker home.home.packages) "work-mini must install lazydocker";
 assert lib.assertMsg (lib.all (name: lib.elem name packageNames) [ "docker" "docker-compose" "pm" ])
   "work-mini must install the docker, docker-compose and pm commands";
 assert lib.assertMsg (!(builtins.hasAttr "docker" home.programs.zsh.shellAliases))
