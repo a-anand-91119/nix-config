@@ -15,17 +15,45 @@ Both use `aarch64-darwin`. The work host is intended for the M5 Mac mini with
 - Shell: Zsh, Powerlevel10k, autosuggestions, fzf-tab and fzf.
 - CLI: bat, btop, tmux, eza, coreutils, gawk, Git, fd, zoxide, Delta, curl,
   jq, yq, ripgrep, direnv, nixpkgs-fmt, glab, uv, Node.js 22 and pnpm.
+- Containers: Podman and podman-compose, with `docker`/`docker-compose`
+  commands and a `pm` helper (see [Containers on work-mini](#containers-on-work-mini)).
 - Management/support: Home Manager and mkalias.
 - Terminal app: Alacritty through Nix/Home Manager.
 - Brew cask: Meslo LG Nerd Font.
 - Tmux plugin: `sensible` only.
 
-There are no work Brew formulae. Python, Java, Ruby, Rust, Docker,
+There are no work Brew formulae. Python, Java, Ruby, Rust, Docker Desktop,
 Kubernetes, AI apps, extra fonts, session-persistence plugins and package-manager
 wrappers are omitted. Normal package dependencies are still installed.
 Use project environments or select an additional feature when a project needs a
 runtime. Neither profile installs VS Code. Work uses macOS's built-in
 `/usr/bin/vi` for `EDITOR` and `VISUAL`; personal retains Helix.
+
+## Containers on work-mini
+
+Podman runs containers in a Linux VM ("machine"). Manage it with `pm`:
+
+| Command | Effect |
+| --- | --- |
+| `pm up` | Create the machine if missing, start it if stopped (safe in Makefiles) |
+| `pm down` | Stop the machine |
+| `pm rootful` / `pm rootless` | Restart the machine in that mode |
+| `pm status` | Show state, mode, socket path and API reachability |
+
+The machine starts rootless. Rootful and rootless keep separate image and
+container stores, so images pulled in one mode are not visible in the other.
+
+`docker` and `docker-compose` are real commands that run `podman` and
+`podman-compose`, so Makefiles and scripts can use them; `docker compose` also
+works. `DOCKER_HOST` points at the machine's API socket under `$TMPDIR` for
+tools that talk to the socket directly (Testcontainers, docker-py). Apps
+launched from Spotlight do not inherit it.
+
+`podman login <registry>` (or `docker login`) stores credentials in the macOS
+Keychain through `~/.config/containers/registries.conf`. Use a GitLab personal
+access token with registry scopes for the self-hosted registry. That file also
+restores Docker's default of resolving short image names such as `nginx`
+against `docker.io`.
 
 ## Separation and ownership
 

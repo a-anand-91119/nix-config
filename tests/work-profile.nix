@@ -95,6 +95,19 @@ assert lib.assertMsg (lib.elem pkgs.glab home.home.packages) "work-mini must ins
 assert lib.assertMsg (lib.elem pkgs.uv home.home.packages) "work-mini must install uv";
 assert lib.assertMsg (lib.elem pkgs.nodejs_22 home.home.packages) "work-mini must install Node.js";
 assert lib.assertMsg (lib.elem pkgs.pnpm home.home.packages) "work-mini must install pnpm";
+assert lib.assertMsg (lib.elem pkgs.podman home.home.packages) "work-mini must install Podman";
+assert lib.assertMsg (lib.elem pkgs.podman-compose home.home.packages) "work-mini must install podman-compose";
+assert lib.assertMsg (lib.elem pkgs.docker-credential-helpers home.home.packages) "work-mini must install the Keychain credential helper";
+assert lib.assertMsg (lib.all (name: lib.elem name packageNames) [ "docker" "docker-compose" "pm" ])
+  "work-mini must install the docker, docker-compose and pm commands";
+assert lib.assertMsg (!(builtins.hasAttr "docker" home.programs.zsh.shellAliases))
+  "docker must be a real command so Makefiles and scripts can use it";
+assert lib.assertMsg (lib.hasSuffix "/podman/podman-machine-default-api.sock" home.home.sessionVariables.DOCKER_HOST)
+  "work-mini DOCKER_HOST must point at the Podman machine socket";
+assert lib.assertMsg (lib.hasInfix ''credential-helpers = ["osxkeychain"]'' home.xdg.configFile."containers/registries.conf".text)
+  "work-mini registry logins must use the macOS Keychain";
+assert lib.assertMsg (lib.hasInfix "compose_warning_logs = false" home.xdg.configFile."containers/containers.conf".text)
+  "work-mini must silence the external compose provider banner";
 assert lib.assertMsg (home.programs.alacritty.package == pkgs.alacritty && lib.elem pkgs.alacritty home.home.packages)
   "Home Manager must install the work Alacritty app through Nix";
 assert lib.assertMsg (!home.programs.zsh.oh-my-zsh.enable) "work-mini must not inherit personal Oh My Zsh setup";
