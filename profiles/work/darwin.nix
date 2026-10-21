@@ -1,4 +1,4 @@
-{ host, lib, pkgs, ... }:
+{ host, pkgs, ... }:
 {
   # User CLI tools live in Home Manager; this is the explicitly selected
   # system helper. The personal Nix Apps activation script is not imported.
@@ -8,9 +8,8 @@
     enable = host.manageHomebrew;
     brews = [ ];
     casks = [
-      "alacritty"
       "font-meslo-lg-nerd-font"
-    ] ++ lib.optional (!host.vscodeManagedExternally) "visual-studio-code";
+    ];
     onActivation = {
       cleanup = "none";
       upgrade = false;

@@ -45,7 +45,7 @@
       export PATH="$HOME/Library/Python/3.14/bin:$PATH"
       export PATH="$HOME/.cargo/bin:$PATH"
       if command -v fnm >/dev/null 2>&1; then
-        eval "$(fnm env --use-on-cd --shell zsh)"
+        eval "$(fnm env --shell zsh)"
       fi
       if command -v jenv >/dev/null 2>&1; then
         export PATH="$HOME/.jenv/bin:$PATH"
