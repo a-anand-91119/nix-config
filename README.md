@@ -14,7 +14,7 @@ Both use `aarch64-darwin`. The work host is intended for the M5 Mac mini with
 
 - Shell: Zsh, Powerlevel10k, autosuggestions, fzf-tab and fzf.
 - CLI: bat, btop, tmux, eza, coreutils, gawk, Git, fd, zoxide, Delta, curl,
-  jq, yq, ripgrep, direnv and nixpkgs-fmt.
+  jq, yq, ripgrep, direnv, nixpkgs-fmt, glab and uv.
 - Management/support: Home Manager and mkalias.
 - Terminal app: Alacritty through Nix/Home Manager.
 - Brew cask: Meslo LG Nerd Font.
