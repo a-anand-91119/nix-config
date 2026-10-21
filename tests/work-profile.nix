@@ -92,6 +92,7 @@ assert lib.assertMsg (lib.all (name: !(builtins.hasAttr name home.programs.zsh.s
 assert lib.assertMsg (lib.all (name: !(builtins.hasAttr name home.home.file)) omittedFiles)
   "personal package-policy dotfiles leaked into work-mini";
 assert lib.assertMsg (pluginPackages == [ pkgs.tmuxPlugins.sensible ]) "work-mini must have only tmux sensible";
+assert lib.assertMsg (lib.elem pkgs.glab home.home.packages) "work-mini must install the GitLab CLI";
 assert lib.assertMsg (home.programs.alacritty.package == pkgs.alacritty && lib.elem pkgs.alacritty home.home.packages)
   "Home Manager must install the work Alacritty app through Nix";
 assert lib.assertMsg (!home.programs.zsh.oh-my-zsh.enable) "work-mini must not inherit personal Oh My Zsh setup";

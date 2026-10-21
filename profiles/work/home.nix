@@ -6,6 +6,9 @@
     VISUAL = "/usr/bin/vi";
   };
 
+  # GitLab CLI for merge requests against the self-hosted instance.
+  home.packages = [ pkgs.glab ];
+
   # Install the app through Nix; the Homebrew cask is disabled by Gatekeeper policy.
   programs.alacritty.package = pkgs.alacritty;
 
