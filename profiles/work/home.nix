@@ -13,6 +13,8 @@
     pkgs.uv
     # JavaScript runtime (22.x LTS line for project tooling).
     pkgs.nodejs_22
+    # Installed directly because corepack cannot write shims into the Nix store.
+    pkgs.pnpm
   ];
 
   # Install the app through Nix; the Homebrew cask is disabled by Gatekeeper policy.
