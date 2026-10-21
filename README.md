@@ -344,6 +344,32 @@ The macOS prerelease warning is a separate Homebrew support diagnostic. It does
 not explain the date-based cask disablement, and a newer macOS/Homebrew support
 status does not by itself re-enable a disabled cask.
 
+### Alacritty missing from Applications or Spotlight
+
+An Alacritty CLI can work while its app is hidden from Spotlight: this repository's
+older Home Manager `stateVersion` defaults to linking app bundles into the Nix
+store. The work profile explicitly uses Home Manager's Spotlight-compatible
+`targets.darwin.copyApps` mode instead. The next activation removes the old managed
+symlink and copies real bundles into `~/Applications/Home Manager Apps`.
+See the [pinned copyApps module](https://github.com/nix-community/home-manager/blob/d2a22a3659a6ae99847ea9176114f6957b8ac62e/modules/targets/darwin/copyapps.nix).
+
+After pulling this change on the work Mac, run `dr` from the checkout, then open
+the managed folder or app:
+
+```sh
+open "$HOME/Applications/Home Manager Apps"
+open "$HOME/Applications/Home Manager Apps/Alacritty.app"
+```
+
+This is the user's Applications folder; the app is not installed directly in
+`/Applications`. Allow Spotlight time to index the copy. If macOS requests App
+Management access during activation, allow the terminal running the rebuild in
+System Settings > Privacy & Security > App Management, then retry `dr`.
+Keep the default managed subfolder: copy mode synchronizes and deletes obsolete
+entries inside it, so it must not point at a general-purpose Applications folder.
+Alacritty remains managed by Nix, with the same settings and normal Gatekeeper
+checks.
+
 ### Homebrew untap permission errors
 
 For an error such as

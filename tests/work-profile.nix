@@ -75,6 +75,8 @@ assert lib.assertMsg (lib.all (name: home.programs.${name}.enable) selectedProgr
   "an approved work program is disabled";
 assert lib.assertMsg (lib.all (package: lib.elem package home.home.packages) selectedUtilities)
   "an approved work utility is missing";
+assert lib.assertMsg (home.targets.darwin.copyApps.enable && !home.targets.darwin.linkApps.enable)
+  "work macOS apps must be copied for Finder and Spotlight";
 assert lib.assertMsg (lib.elem pkgs.mkalias config.environment.systemPackages) "the selected mkalias helper is missing";
 assert lib.assertMsg (config.homebrew.brews == [ ]) "work-mini must not inherit personal Brew formulae";
 assert lib.assertMsg

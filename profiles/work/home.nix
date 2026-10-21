@@ -8,4 +8,11 @@
 
   # Install the app through Nix; the Homebrew cask is disabled by Gatekeeper policy.
   programs.alacritty.package = pkgs.alacritty;
+
+  # Real app bundles in the managed user folder can be indexed by Spotlight.
+  # Explicitly migrate from the symlink mode retained by our older stateVersion.
+  targets.darwin = {
+    linkApps.enable = false;
+    copyApps.enable = true;
+  };
 }
