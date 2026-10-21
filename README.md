@@ -46,7 +46,8 @@ machines can be edited independently.
 User programs and dotfiles are managed by Home Manager. Home Manager installs
 the work Alacritty app and writes its settings; Brew owns the font.
 The work host does not import the personal `/Applications/Nix Apps`
-script, macOS preferences, login-window banner or Touch ID configuration.
+script, macOS preferences or login-window banner. Both profiles enable local sudo
+authentication with Touch ID, including PAM reattachment for tmux support.
 
 Work Brew activation uses `cleanup = "none"`, `upgrade = false` and
 `autoUpdate = false`. Both profiles use `cleanup = "none"`, so removing a package
@@ -260,6 +261,31 @@ These standalone commands use an imperative Nix profile and channel. Use the
 flake workflow above for this repository's default nix-darwin-managed setup.
 
 ## Troubleshooting
+
+### Sudo Touch ID on the work Mac
+
+Both profiles import `modules/security.nix`, enabling
+`security.pam.services.sudo_local.touchIdAuth` and `reattach`. The latter provides
+Touch ID support inside tmux, which Alacritty starts automatically. See the
+[pinned nix-darwin PAM module](https://github.com/nix-darwin/nix-darwin/blob/4cff07de74b50e64bdd68cd4e722ab5b6b35ee48/modules/security/pam.nix).
+
+A Mac mini needs a paired Magic Keyboard with Touch ID and an enrolled
+fingerprint. Confirm Touch ID already unlocks the Mac in System Settings before
+testing sudo; see [Apple's Touch ID requirements](https://support.apple.com/guide/security/magic-keyboard-with-touch-id-secf60513daa/web).
+
+After updating the checkout and applying `work-mini`, check the generated PAM
+entries and force a fresh authentication prompt:
+
+```sh
+grep -E 'pam_(tid|reattach)' /etc/pam.d/sudo_local
+sudo -k
+sudo -v
+```
+
+Test locally in Apple's Terminal outside tmux first, then inside Alacritty/tmux.
+If it works outside tmux only, confirm the `pam_reattach.so` entry is present
+before `pam_tid.so`. Password authentication remains available when Touch ID
+cannot be used. Fingerprint enrollment is managed by macOS, not this repository.
 
 ### SSL / CA certificate errors
 

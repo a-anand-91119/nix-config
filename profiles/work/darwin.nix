@@ -1,5 +1,7 @@
 { host, pkgs, ... }:
 {
+  imports = [ ../../modules/security.nix ];
+
   # User CLI tools live in Home Manager; this is the explicitly selected
   # system helper. The personal Nix Apps activation script is not imported.
   environment.systemPackages = [ pkgs.mkalias ];

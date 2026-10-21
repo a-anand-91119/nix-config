@@ -93,8 +93,8 @@ assert lib.assertMsg (pluginPackages == [ pkgs.tmuxPlugins.sensible ]) "work-min
 assert lib.assertMsg (home.programs.alacritty.package == pkgs.alacritty && lib.elem pkgs.alacritty home.home.packages)
   "Home Manager must install the work Alacritty app through Nix";
 assert lib.assertMsg (!home.programs.zsh.oh-my-zsh.enable) "work-mini must not inherit personal Oh My Zsh setup";
-assert lib.assertMsg (!config.security.pam.services.sudo_local.touchIdAuth && !config.security.pam.services.sudo_local.reattach)
-  "work-mini must not inherit personal PAM configuration";
+assert lib.assertMsg (config.security.pam.services.sudo_local.touchIdAuth && config.security.pam.services.sudo_local.reattach)
+  "work-mini must enable sudo Touch ID with tmux PAM reattachment";
 assert lib.assertMsg (home.programs.git.settings.user.email == host.git.email) "work Git identity does not match its host metadata";
 assert lib.assertMsg (lib.hasInfix "#work-mini" home.programs.zsh.shellAliases.dr) "work rebuild shortcut targets the wrong host";
 assert lib.assertMsg (!lib.hasInfix "fnm_multishells" home.programs.zsh.initContent) "work shell contains copied fnm state";
