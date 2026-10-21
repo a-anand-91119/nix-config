@@ -1,14 +1,11 @@
+{ pkgs, ... }:
 {
-  # The selected VS Code cask supplies this CLI. Wait for editing to finish
-  # when Git or another terminal command invokes the editor.
+  # Use the built-in macOS editor without requiring another GUI application.
   home.sessionVariables = {
-    EDITOR = "code --wait";
-    VISUAL = "code --wait";
+    EDITOR = "/usr/bin/vi";
+    VISUAL = "/usr/bin/vi";
   };
 
-  # Brew owns the GUI application; Home Manager only writes its settings.
-  programs.alacritty = {
-    package = null;
-    settings.font.normal.family = "MesloLGS Nerd Font Mono";
-  };
+  # Install the app through Nix; the Homebrew cask is disabled by Gatekeeper policy.
+  programs.alacritty.package = pkgs.alacritty;
 }

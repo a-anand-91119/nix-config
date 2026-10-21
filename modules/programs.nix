@@ -5,6 +5,7 @@
   programs.zsh = {
     enable = true; # default shell on catalina
     # Home Manager owns interactive completion, prompt and plugin setup.
+    enableGlobalCompInit = false;
     enableFzfCompletion = false;
     enableFzfGit = false;
     enableFzfHistory = false;

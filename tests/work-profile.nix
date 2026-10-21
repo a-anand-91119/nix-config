@@ -5,7 +5,6 @@ let
   home = config.home-manager.users.${host.username};
   packageNames = map (package: package.pname or package.name) home.home.packages;
   omittedPackages = [
-    "alacritty"
     "helix"
     "fastfetch"
     "sfw"
@@ -80,7 +79,7 @@ assert lib.assertMsg (lib.elem pkgs.mkalias config.environment.systemPackages) "
 assert lib.assertMsg (config.homebrew.brews == [ ]) "work-mini must not inherit personal Brew formulae";
 assert lib.assertMsg
   (map (cask: cask.name) config.homebrew.casks ==
-  [ "alacritty" "font-meslo-lg-nerd-font" ] ++ lib.optional (!host.vscodeManagedExternally) "visual-studio-code")
+  [ "font-meslo-lg-nerd-font" ])
   "work-mini casks differ from the approved selection";
 assert lib.assertMsg (config.homebrew.onActivation.cleanup == "none") "work-mini must preserve unlisted Brew apps";
 assert lib.assertMsg (!config.homebrew.onActivation.upgrade && !config.homebrew.onActivation.autoUpdate)
@@ -91,7 +90,8 @@ assert lib.assertMsg (lib.all (name: !(builtins.hasAttr name home.programs.zsh.s
 assert lib.assertMsg (lib.all (name: !(builtins.hasAttr name home.home.file)) omittedFiles)
   "personal package-policy dotfiles leaked into work-mini";
 assert lib.assertMsg (pluginPackages == [ pkgs.tmuxPlugins.sensible ]) "work-mini must have only tmux sensible";
-assert lib.assertMsg (home.programs.alacritty.package == null) "Brew must be the only work Alacritty package owner";
+assert lib.assertMsg (home.programs.alacritty.package == pkgs.alacritty && lib.elem pkgs.alacritty home.home.packages)
+  "Home Manager must install the work Alacritty app through Nix";
 assert lib.assertMsg (!home.programs.zsh.oh-my-zsh.enable) "work-mini must not inherit personal Oh My Zsh setup";
 assert lib.assertMsg (!config.security.pam.services.sudo_local.touchIdAuth && !config.security.pam.services.sudo_local.reattach)
   "work-mini must not inherit personal PAM configuration";

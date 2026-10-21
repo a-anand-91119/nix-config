@@ -54,7 +54,6 @@
       "font-monaspice-nerd-font"
       "font-noto-sans-symbols-2"
       "corretto@8"
-      "visual-studio-code"
       "ngrok"
       "maccy"
       "xykong/tap/flux-markdown"
@@ -62,7 +61,8 @@
       "macpacker"
     ];
     onActivation = {
-      cleanup = "zap";
+      # Removing a declaration must not erase an existing app or its data.
+      cleanup = "none";
       upgrade = true;
       autoUpdate = true;
     };
