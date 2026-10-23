@@ -19,10 +19,10 @@ Both use `aarch64-darwin`. The work host is intended for the M5 Mac mini with
   commands and a `pm` helper (see [Containers on work-mini](#containers-on-work-mini)).
 - Management/support: Home Manager and mkalias.
 - Terminal app: Alacritty through Nix/Home Manager.
-- Brew cask: Meslo LG Nerd Font.
+- Brew: k6 formula and the Meslo LG Nerd Font cask.
 - Tmux plugin: `sensible` only.
 
-There are no work Brew formulae. Python, Java, Ruby, Rust, Docker Desktop,
+The only work Brew formula is k6. Python, Java, Ruby, Rust, Docker Desktop,
 Kubernetes, AI apps, extra fonts, session-persistence plugins and package-manager
 wrappers are omitted. Normal package dependencies are still installed.
 Use project environments or select an additional feature when a project needs a
@@ -75,7 +75,7 @@ same meaning for either host. Each file keeps its own identity and profile so th
 machines can be edited independently.
 
 User programs and dotfiles are managed by Home Manager. Home Manager installs
-the work Alacritty app and writes its settings; Brew owns the font.
+the work Alacritty app and writes its settings; Brew owns the font and k6.
 The work host does not import the personal `/Applications/Nix Apps`
 script, macOS preferences or login-window banner. Both profiles enable local sudo
 authentication with Touch ID, including PAM reattachment for tmux support.

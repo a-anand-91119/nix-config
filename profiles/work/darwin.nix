@@ -8,7 +8,9 @@
 
   homebrew = {
     enable = host.manageHomebrew;
-    brews = [ ];
+    brews = [
+      "k6"
+    ];
     casks = [
       "font-meslo-lg-nerd-font"
     ];
