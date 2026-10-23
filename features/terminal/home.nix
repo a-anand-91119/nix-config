@@ -1,4 +1,21 @@
 { config, host, lib, pkgs, ... }:
+let
+  # Search the current folder by name and print absolute paths: `ff <regex>` for files, `ffd <regex>` for folders.
+  findByName = name: type: description: pkgs.writeShellApplication {
+    inherit name;
+    runtimeInputs = with pkgs; [ findutils gnugrep ];
+    text = ''
+      if [ $# -ne 1 ]; then
+        echo "usage: ${name} <name-regex>  (${description}, case-insensitive, absolute paths)" >&2
+        exit 2
+      fi
+      # Match only the last path component, and skip .git internals.
+      find "$PWD" -path '*/.git' -prune -o -type ${type} -print | grep -iE -- "$1[^/]*$" || true
+    '';
+  };
+  ff = findByName "ff" "f" "search files";
+  ffd = findByName "ffd" "d" "search folders";
+in
 {
   # Programs managed by their Home Manager modules are not repeated here.
   home.packages = with pkgs; [
@@ -12,6 +29,8 @@
     zsh-autosuggestions
     zsh-fzf-tab
     nixpkgs-fmt
+    ff
+    ffd
   ];
   home.sessionPath = [ "${config.home.homeDirectory}/.local/bin" ];
 

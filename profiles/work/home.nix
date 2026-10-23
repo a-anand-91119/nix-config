@@ -24,6 +24,8 @@ in
   home.packages = [
     # GitLab CLI for merge requests against the self-hosted instance.
     pkgs.glab
+    # AWS command-line interface (v2).
+    pkgs.awscli2
     # Python package and project manager.
     pkgs.uv
     # JavaScript runtime (22.x LTS line for project tooling).

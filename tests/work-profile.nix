@@ -92,6 +92,8 @@ assert lib.assertMsg (lib.all (name: !(builtins.hasAttr name home.home.file)) om
 assert lib.assertMsg (pluginPackages == [ pkgs.tmuxPlugins.sensible ]) "work-mini must have only tmux sensible";
 assert lib.assertMsg (lib.elem pkgs.glab home.home.packages) "work-mini must install the GitLab CLI";
 assert lib.assertMsg (lib.elem pkgs.uv home.home.packages) "work-mini must install uv";
+assert lib.assertMsg (lib.all (name: lib.elem name packageNames) [ "ff" "ffd" ]) "work-mini must install the ff and ffd search commands";
+assert lib.assertMsg (lib.elem pkgs.awscli2 home.home.packages) "work-mini must install the AWS CLI";
 assert lib.assertMsg (lib.elem pkgs.nodejs_22 home.home.packages) "work-mini must install Node.js";
 assert lib.assertMsg (lib.elem pkgs.pnpm home.home.packages) "work-mini must install pnpm";
 assert lib.assertMsg (lib.elem pkgs.podman home.home.packages) "work-mini must install Podman";

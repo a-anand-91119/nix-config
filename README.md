@@ -14,7 +14,7 @@ Both use `aarch64-darwin`. The work host is intended for the M5 Mac mini with
 
 - Shell: Zsh, Powerlevel10k, autosuggestions, fzf-tab and fzf.
 - CLI: bat, btop, tmux, eza, coreutils, gawk, Git, fd, zoxide, Delta, curl,
-  jq, yq, ripgrep, direnv, nixpkgs-fmt, glab, uv, Node.js 22 and pnpm.
+  jq, yq, ripgrep, direnv, nixpkgs-fmt, glab, AWS CLI, uv, Node.js 22 and pnpm.
 - Containers: Podman, podman-compose and lazydocker, with `docker`/`docker-compose`
   commands and a `pm` helper (see [Containers on work-mini](#containers-on-work-mini)).
 - Management/support: Home Manager and mkalias.
