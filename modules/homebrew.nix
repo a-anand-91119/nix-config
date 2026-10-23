@@ -59,6 +59,7 @@
       "xykong/tap/flux-markdown"
       "t3-code"
       "macpacker"
+      "sublime-text"
     ];
     onActivation = {
       # Removing a declaration must not erase an existing app or its data.

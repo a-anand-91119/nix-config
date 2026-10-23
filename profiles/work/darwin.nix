@@ -13,6 +13,8 @@
     ];
     casks = [
       "font-meslo-lg-nerd-font"
+      "session-manager-plugin"
+      "sublime-text"
     ];
     onActivation = {
       cleanup = "none";

@@ -45,6 +45,16 @@ in
     pm
   ];
 
+  programs.zsh.shellAliases = {
+    cc = "claude";
+    ccd = "claude --dangerously-skip-permissions";
+    python = "python3";
+    pip = "pip3";
+    # Same as the oh-my-zsh sublime plugin used on personal.
+    st = "subl";
+    stt = "subl .";
+  };
+
   # A user registries.conf replaces the system one, so restore Docker's short-name default.
   xdg.configFile."containers/registries.conf".text = ''
     unqualified-search-registries = ["docker.io"]

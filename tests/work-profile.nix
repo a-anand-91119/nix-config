@@ -25,12 +25,8 @@ let
     "uv"
     "cargo"
     "pip3"
-    "pip"
-    "python"
     "k"
     "d"
-    "cc"
-    "ccd"
     "cx"
     "cxd"
     "ccx"
@@ -79,7 +75,7 @@ assert lib.assertMsg (lib.elem pkgs.mkalias config.environment.systemPackages) "
 assert lib.assertMsg (map (brew: brew.name) config.homebrew.brews == [ "k6" ]) "work-mini Brew formulae differ from the approved selection";
 assert lib.assertMsg
   (map (cask: cask.name) config.homebrew.casks ==
-  [ "font-meslo-lg-nerd-font" ])
+  [ "font-meslo-lg-nerd-font" "session-manager-plugin" "sublime-text" ])
   "work-mini casks differ from the approved selection";
 assert lib.assertMsg (config.homebrew.onActivation.cleanup == "none") "work-mini must preserve unlisted Brew apps";
 assert lib.assertMsg (!config.homebrew.onActivation.upgrade && !config.homebrew.onActivation.autoUpdate)
@@ -87,6 +83,9 @@ assert lib.assertMsg (!config.homebrew.onActivation.upgrade && !config.homebrew.
 assert lib.assertMsg (lib.intersectLists omittedPackages packageNames == [ ]) "a personal package leaked into work-mini";
 assert lib.assertMsg (lib.all (name: !(builtins.hasAttr name home.programs.zsh.shellAliases)) omittedAliases)
   "a personal or uninstalled-tool alias leaked into work-mini";
+assert lib.assertMsg
+  (lib.all (name: builtins.hasAttr name home.programs.zsh.shellAliases) [ "cc" "ccd" "python" "pip" "st" "stt" ])
+  "work-mini must define its approved Claude, Python and Sublime aliases";
 assert lib.assertMsg (lib.all (name: !(builtins.hasAttr name home.home.file)) omittedFiles)
   "personal package-policy dotfiles leaked into work-mini";
 assert lib.assertMsg (pluginPackages == [ pkgs.tmuxPlugins.sensible ]) "work-mini must have only tmux sensible";
