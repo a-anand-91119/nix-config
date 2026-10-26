@@ -10,6 +10,7 @@
     enable = host.manageHomebrew;
     brews = [
       "k6"
+      "mole"
     ];
     casks = [
       "font-meslo-lg-nerd-font"

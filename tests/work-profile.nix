@@ -72,7 +72,7 @@ assert lib.assertMsg (lib.all (package: lib.elem package home.home.packages) sel
 assert lib.assertMsg (home.targets.darwin.copyApps.enable && !home.targets.darwin.linkApps.enable)
   "work macOS apps must be copied for Finder and Spotlight";
 assert lib.assertMsg (lib.elem pkgs.mkalias config.environment.systemPackages) "the selected mkalias helper is missing";
-assert lib.assertMsg (map (brew: brew.name) config.homebrew.brews == [ "k6" ]) "work-mini Brew formulae differ from the approved selection";
+assert lib.assertMsg (map (brew: brew.name) config.homebrew.brews == [ "k6" "mole" ]) "work-mini Brew formulae differ from the approved selection";
 assert lib.assertMsg
   (map (cask: cask.name) config.homebrew.casks ==
   [ "font-meslo-lg-nerd-font" "session-manager-plugin" "sublime-text" ])
