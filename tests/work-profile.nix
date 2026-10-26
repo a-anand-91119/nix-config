@@ -107,6 +107,10 @@ assert lib.assertMsg (lib.hasSuffix "/podman/podman-machine-default-api.sock" ho
   "work-mini DOCKER_HOST must point at the Podman machine socket";
 assert lib.assertMsg (lib.hasInfix ''credential-helpers = ["osxkeychain"]'' home.xdg.configFile."containers/registries.conf".text)
   "work-mini registry logins must use the macOS Keychain";
+assert lib.assertMsg (lib.hasInfix "/usr/local/bin/podman" config.system.activationScripts.postActivation.text)
+  "work-mini must expose podman in /usr/local/bin for GUI apps";
+assert lib.assertMsg (lib.hasInfix "helper_binaries_dir" home.xdg.configFile."containers/containers.conf".text)
+  "work-mini must tell Podman where its helper binaries live";
 assert lib.assertMsg (lib.hasInfix "compose_warning_logs = false" home.xdg.configFile."containers/containers.conf".text)
   "work-mini must silence the external compose provider banner";
 assert lib.assertMsg (home.programs.alacritty.package == pkgs.alacritty && lib.elem pkgs.alacritty home.home.packages)

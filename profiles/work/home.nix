@@ -66,6 +66,12 @@ in
     [engine]
     compose_providers = ["${pkgs.podman-compose}/bin/podman-compose"]
     compose_warning_logs = false
+    # Where Podman Desktop and `podman machine` find gvproxy, vfkit and krunkit.
+    helper_binaries_dir = [
+      "${pkgs.podman}/libexec/podman",
+      "${pkgs.vfkit}/bin",
+      "${pkgs.krunkit}/bin"
+    ]
   '';
 
   # Install the app through Nix; the Homebrew cask is disabled by Gatekeeper policy.
