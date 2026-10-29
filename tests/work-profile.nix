@@ -27,8 +27,6 @@ let
     "pip3"
     "k"
     "d"
-    "cx"
-    "cxd"
     "ccx"
     "ccdx"
     "oc"
@@ -84,8 +82,8 @@ assert lib.assertMsg (lib.intersectLists omittedPackages packageNames == [ ]) "a
 assert lib.assertMsg (lib.all (name: !(builtins.hasAttr name home.programs.zsh.shellAliases)) omittedAliases)
   "a personal or uninstalled-tool alias leaked into work-mini";
 assert lib.assertMsg
-  (lib.all (name: builtins.hasAttr name home.programs.zsh.shellAliases) [ "cc" "ccd" "python" "pip" "st" "stt" ])
-  "work-mini must define its approved Claude, Python and Sublime aliases";
+  (lib.all (name: builtins.hasAttr name home.programs.zsh.shellAliases) [ "cc" "ccd" "cx" "cxd" "python" "pip" "st" "stt" ])
+  "work-mini must define its approved Claude, Codex, Python and Sublime aliases";
 assert lib.assertMsg (lib.all (name: !(builtins.hasAttr name home.home.file)) omittedFiles)
   "personal package-policy dotfiles leaked into work-mini";
 assert lib.assertMsg (pluginPackages == [ pkgs.tmuxPlugins.sensible ]) "work-mini must have only tmux sensible";

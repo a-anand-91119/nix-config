@@ -50,6 +50,8 @@ in
   programs.zsh.shellAliases = {
     cc = "claude";
     ccd = "claude --dangerously-skip-permissions";
+    cx = "codex";
+    cxd = "codex --yolo";
     python = "python3";
     pip = "pip3";
     # Same as the oh-my-zsh sublime plugin used on personal.
