@@ -59,6 +59,17 @@ access token with registry scopes for the self-hosted registry. That file also
 restores Docker's default of resolving short image names such as `nginx`
 against `docker.io`.
 
+## Work-only custom shell commands
+
+Put your own aliases and functions for work in `~/.config/zsh/work.zsh`. It is
+not part of this repository: the first rebuild creates it from
+`resources/work/custom.zsh` and never overwrites it afterwards. Every new
+interactive zsh sources it. Run `wedit` to open it and `wreload` to apply
+changes to the current terminal. The starter file includes `ssm-rdp
+[instance-id] [remote-port] [local-port] [region]`, an AWS Session Manager
+port-forward. Aliases and functions exist only in interactive zsh, so scripts
+and Makefiles cannot call them; use a real command (a script on `PATH`) for that.
+
 ## Separation and ownership
 
 - `lib/mk-host.nix` builds either host and passes its metadata to Darwin and

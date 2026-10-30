@@ -1,5 +1,8 @@
-{ pkgs, ... }:
+{ config, lib, pkgs, ... }:
 let
+  # Untracked, user-owned file of work-only aliases/functions; seeded once from a template.
+  workShellFile = "${config.home.homeDirectory}/.config/zsh/work.zsh";
+
   # Real executables, unlike aliases, are visible to Makefiles and scripts.
   docker = pkgs.writeShellScriptBin "docker" ''exec ${pkgs.podman}/bin/podman "$@"'';
   docker-compose = pkgs.writeShellScriptBin "docker-compose" ''exec ${pkgs.podman-compose}/bin/podman-compose "$@"'';
@@ -58,6 +61,21 @@ in
     st = "subl";
     stt = "subl .";
   };
+
+  # Source the user-owned work shell file in every interactive shell, if present.
+  programs.zsh.initContent = lib.mkOrder 1200 ''
+    alias wedit='${"$"}{EDITOR:-vi} ${workShellFile}'
+    alias wreload='source ${workShellFile}'
+    [[ -r ${workShellFile} ]] && source ${workShellFile}
+  '';
+
+  # Create the file from the template only when missing, so later edits are never overwritten.
+  home.activation.workShellFile = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    if [ ! -e "${workShellFile}" ]; then
+      run mkdir -p "$(dirname "${workShellFile}")"
+      run install -m 644 ${../../resources/work/custom.zsh} "${workShellFile}"
+    fi
+  '';
 
   # A user registries.conf replaces the system one, so restore Docker's short-name default.
   xdg.configFile."containers/registries.conf".text = ''

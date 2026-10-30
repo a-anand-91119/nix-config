@@ -90,6 +90,8 @@ assert lib.assertMsg (pluginPackages == [ pkgs.tmuxPlugins.sensible ]) "work-min
 assert lib.assertMsg (lib.elem pkgs.glab home.home.packages) "work-mini must install the GitLab CLI";
 assert lib.assertMsg (lib.elem pkgs.uv home.home.packages) "work-mini must install uv";
 assert lib.assertMsg (lib.all (name: lib.elem name packageNames) [ "ff" "ffd" ]) "work-mini must install the ff and ffd search commands";
+assert lib.assertMsg (home.home.activation ? workShellFile && lib.hasInfix ".config/zsh/work.zsh" home.programs.zsh.initContent)
+  "work-mini must seed and source the user-owned work shell file";
 assert lib.assertMsg (lib.elem pkgs.gh home.home.packages) "work-mini must install the GitHub CLI";
 assert lib.assertMsg (lib.elem pkgs.awscli2 home.home.packages) "work-mini must install the AWS CLI";
 assert lib.assertMsg (lib.elem pkgs.nodejs_22 home.home.packages) "work-mini must install Node.js";
