@@ -1,507 +1,279 @@
-# macOS configurations
+# nix-darwin config
 
-One flake manages two independent host outputs:
+One flake, multiple Macs. Each Mac is a "host" with its own file in `hosts/`:
 
-| Output | Host settings | Applications |
+| Host (flake output) | Host file | Profile |
 | --- | --- | --- |
-| `Anands-MacBook-Pro--M3-Pro` | [hosts/personal-macbook.nix](hosts/personal-macbook.nix) | Existing personal tools, JDKs, desktop apps and tmux plugins |
-| `work-mini` | [hosts/work-mini.nix](hosts/work-mini.nix) | Selected terminal/Git baseline, Alacritty, Meslo Nerd Font, and tmux `sensible` only |
+| `Anands-MacBook-Pro--M3-Pro` | [hosts/personal-macbook.nix](hosts/personal-macbook.nix) | personal: full toolset, JDKs, desktop apps |
+| `work-mini` | [hosts/work-mini.nix](hosts/work-mini.nix) | work: minimal terminal/Git baseline, Alacritty, Podman |
 
-Both use `aarch64-darwin`. The work host is intended for the M5 Mac mini with
-24 GB RAM and a 1 TB SSD. Its output name does not rename the macOS computer.
+In the commands below, replace `<host>` with the flake output name from this table.
 
-## What the work profile installs
+---
 
-- Shell: Zsh, Powerlevel10k, autosuggestions, fzf-tab and fzf.
-- CLI: bat, btop, tmux, eza, coreutils, gawk, Git, fd, zoxide, Delta, curl,
-  jq, yq, ripgrep, direnv, nixpkgs-fmt, glab, gh, AWS CLI, uv, Node.js 22 and pnpm.
-- Containers: Podman, podman-compose and lazydocker, with `docker`/`docker-compose`
-  commands and a `pm` helper (see [Containers on work-mini](#containers-on-work-mini)).
-- Management/support: Home Manager and mkalias.
-- Terminal app: Alacritty through Nix/Home Manager.
-- Brew: k6 and mole formulae, plus the Meslo LG Nerd Font, AWS Session Manager
-  plugin and Sublime Text casks.
-- Tmux plugin: `sensible` only.
+## Install on a fresh Mac
 
-The only work Brew formulae are k6 and mole. Python, Java, Ruby, Rust, Docker Desktop,
-Kubernetes, AI apps, extra fonts, session-persistence plugins and package-manager
-wrappers are omitted. Normal package dependencies are still installed.
-Use project environments or select an additional feature when a project needs a
-runtime. Neither profile installs VS Code. Work uses macOS's built-in
-`/usr/bin/vi` for `EDITOR` and `VISUAL`; personal retains Helix.
+1. **Install Xcode command-line tools** (if not already there)
+   ```shell
+   xcode-select --install
+   ```
 
-## Containers on work-mini
+2. **Install Nix**
+   ```shell
+   curl -L https://nixos.org/nix/install | sh -s -- --daemon
+   ```
+   Alternative: the Determinate installer. It can also fix a broken existing install:
+   ```shell
+   curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+   ```
+   > If you use Determinate, set `manageNix = false` in your host file **before** step 5.
+   > Determinate also has a native macOS package: https://docs.determinate.systems/
+   > Uninstall Determinate with `sudo /nix/nix-installer uninstall`
 
-Podman runs containers in a Linux VM ("machine"). Manage it with `pm`:
+   Open a new terminal, then check that `nix --version` works.
 
-| Command | Effect |
-| --- | --- |
-| `pm up` | Create the machine if missing, start it if stopped (safe in Makefiles) |
-| `pm down` | Stop the machine |
-| `pm rootful` / `pm rootless` | Restart the machine in that mode |
-| `pm status` | Show state, mode, socket path and API reachability |
-
-The machine starts rootless. Rootful and rootless keep separate image and
-container stores, so images pulled in one mode are not visible in the other.
-
-`docker` and `docker-compose` are real commands that run `podman` and
-`podman-compose`, so Makefiles and scripts can use them; `docker compose` also
-works. `DOCKER_HOST` points at the machine's API socket under `$TMPDIR` for
-tools that talk to the socket directly (Testcontainers, docker-py). Apps
-launched from Spotlight do not inherit it.
-
-Run `lazydocker` for a terminal UI over the same containers; it uses `DOCKER_HOST`,
-so start the machine with `pm up` first.
-
-`podman login <registry>` (or `docker login`) stores credentials in the macOS
-Keychain through `~/.config/containers/registries.conf`. Use a GitLab personal
-access token with registry scopes for the self-hosted registry. That file also
-restores Docker's default of resolving short image names such as `nginx`
-against `docker.io`.
-
-## Work-only custom shell commands
-
-Put your own aliases and functions for work in `~/.config/zsh/work.zsh`. It is
-not part of this repository: the first rebuild creates it from
-`resources/work/custom.zsh` and never overwrites it afterwards. Every new
-interactive zsh sources it. Run `wedit` to open it and `wreload` to apply
-changes to the current terminal. The starter file includes `ssm-rdp
-[instance-id] [remote-port] [local-port] [region]`, an AWS Session Manager
-port-forward. Aliases and functions exist only in interactive zsh, so scripts
-and Makefiles cannot call them; use a real command (a script on `PATH`) for that.
-
-## Separation and ownership
-
-- `lib/mk-host.nix` builds either host and passes its metadata to Darwin and
-  Home Manager. Edit username, home/check-out paths, Git identity and ownership
-  flags in the host file.
-- `configuration.nix` and `home.nix` compose the shared system and user setup.
-- `features/terminal/home.nix` owns shared shell behavior and selected CLI tools.
-- `profiles/personal/` imports the existing personal package lists, language
-  integrations, package-manager policy and optional tmux plugins.
-- `profiles/work/` contains the work-only allowlist and editor/app ownership.
-
-Both host files use the same fields and derive home/check-out paths from the
-username. Nix, Homebrew and migration ownership flags have the
-same meaning for either host. Each file keeps its own identity and profile so the
-machines can be edited independently.
-
-User programs and dotfiles are managed by Home Manager. Home Manager installs
-the work Alacritty app and writes its settings; Brew owns the font, the Session Manager plugin, k6 and mole.
-The work host does not import the personal `/Applications/Nix Apps`
-script, macOS preferences or login-window banner. Both profiles enable local sudo
-authentication with Touch ID, including PAM reattachment for tmux support.
-
-Work Brew activation uses `cleanup = "none"`, `upgrade = false` and
-`autoUpdate = false`. Both profiles use `cleanup = "none"`, so removing a package
-declaration preserves an existing installation and its data. Personal still
-updates and upgrades its listed Brew packages during activation. A Nix generation
-rollback does not undo arbitrary Brew upgrades or restore removed application data.
-
-## Set up the new Mac
-
-1. Confirm the short username with `id -un` and the home directory with
-   `echo "$HOME"`. `hosts/work-mini.nix` currently uses `aanand`,
-   `/Users/aanand`, and `~/nix-config`. Change the host file if needed. It uses
-   the existing Git name `A Anand` and email `a.anand.91119@gmail.com`, as requested.
-   GitHub login/SSH keys are separate from the commit identity.
-2. You need administrator access. Install Apple's command-line developer tools
-   if not present (`xcode-select --install`). Check whether Homebrew or the
-   selected apps are already installed before assigning ownership.
-3. Install **one** macOS multi-user Nix distribution using its current
-   [official instructions](https://nixos.org/download/), then reopen Terminal.
-   The concrete installer commands are under [Nix installation options](#nix-installation-options).
-   The default host settings let nix-darwin manage upstream Nix.
-   If you choose [Determinate Nix](https://docs.determinate.systems/guides/nix-darwin/),
-   set `manageNix = false` in the host file **before** bootstrapping. This also
-   leaves daemon settings, garbage collection and optimisation to that installation.
-   Do not install a second distribution over an existing one as a repair step.
-4. Clone the repository using your available GitLab account and network access:
-
-   ```sh
-   git clone https://gitlab.notyouraverage.dev/a.anand.91119/nix-config.git ~/nix-config
+3. **Clone this repository**
+   ```shell
+   nix-shell -p git --run 'git clone https://gitlab.notyouraverage.dev/a.anand.91119/nix-config.git ~/nix-config'
    cd ~/nix-config
    ```
 
-   If Git is unavailable, Nix can provide it for the clone without adding it to
-   your permanent package list:
+4. **Check the host file** (`hosts/<file>.nix`)
+   - `username` must match `id -un` on this Mac.
+   - `git.name` / `git.email` set the commit identity.
+   - `migrateHomebrew = false` for a Mac with no Homebrew yet. Set it to `true` only if
+     you want nix-homebrew to take over an existing Homebrew install.
+   - Setting up a Mac that isn't in the table? See [Add a new Mac](#add-a-new-mac).
 
-   ```sh
-   nix --extra-experimental-features 'nix-command flakes' shell nixpkgs#git --command \
-     git clone https://gitlab.notyouraverage.dev/a.anand.91119/nix-config.git ~/nix-config
-   cd ~/nix-config
-   ```
-
-   The existing checkout's SSH remote uses port 8443. Use the appropriate SSH or
-   HTTPS transport for the new Mac; do not assume its keys are already registered.
-   New Nix module files must be added to Git before a normal `.#host` flake build
-   can see them. The test script uses `path:` to include untracked files without
-   modifying your index.
-5. Review `hosts/work-mini.nix`. For a new Brew installation leave
-   `migrateHomebrew = false`. If intentionally handing an existing, self-managed
-   Brew installation to nix-homebrew, set it to `true` after reviewing ownership
-   and existing taps. Do not migrate a company-managed installation implicitly.
-   Set `manageHomebrew = false` to leave Brew/font installation external.
-   The work Alacritty app remains managed by Nix/Home Manager.
-6. Evaluate and build the work configuration using its **locked** nix-darwin input:
-   For a personal installation, replace `work-mini` with
-   `Anands-MacBook-Pro--M3-Pro` in both the build and switch commands.
-
-   ```sh
-   nix --extra-experimental-features 'nix-command flakes' run \
-     --inputs-from . nix-darwin#darwin-rebuild -- build --flake .#work-mini
-   ```
-
-   This builds without activating the system. Review any existing Home Manager
-   dotfile conflicts before continuing. Back up/migrate those files deliberately;
-   do not force-overwrite registry credentials or application settings.
-7. Apply the work profile only when ready:
-
-   ```sh
+5. **Build and apply the config**
+   ```shell
    sudo nix --extra-experimental-features 'nix-command flakes' run \
-     --inputs-from . nix-darwin#darwin-rebuild -- switch --flake .#work-mini
+     --inputs-from . nix-darwin#darwin-rebuild -- switch --flake ~/nix-config#<host>
    ```
+   Optional dry run first (builds without activating): use `build` instead of `switch`
+   and drop the `sudo`.
 
-8. Open a new terminal. Check `git config --get user.email`, `alacritty --version`,
-   `tmux -V`, prompt/icons, and Finder/Spotlight app visibility. Alacritty starts
-   tmux, which starts Zsh. Set up new GitLab/GitHub authentication separately;
-   never copy personal credential directories wholesale as an installation step.
+6. **Open a new terminal.** From now on, rebuild with the `dr` alias.
 
-## Nix installation options
+---
 
-For the default `manageNix = true` setup, install upstream multi-user Nix:
+## Daily use
 
-```sh
-curl -L https://nixos.org/nix/install | sh -s -- --daemon
+```shell
+dr                     # rebuild + apply this Mac's config
 ```
 
-This is the [official multi-user installer](https://nix.dev/manual/nix/latest/installation/installing-binary.html#multi-user-installation).
-Run it from your normal account and follow its sudo prompts.
+`dr` expands to `sudo darwin-rebuild switch --flake ~/nix-config#<this host>`, so the
+same alias works on every Mac. It applies the local checkout; run `git pull` first if you
+want remote changes.
 
-Alternatively, install Determinate Nix using its macOS installer or shell installer:
+### Updating the system
 
-```sh
-curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
-```
-
-Set `manageNix = false` in the selected host file before the first rebuild.
-See [Determinate's installation documentation](https://docs.determinate.systems/)
-and [nix-darwin integration guide](https://docs.determinate.systems/guides/nix-darwin/).
-Choose one installer for a new Mac; repairing or migrating an existing
-installation should follow that installer's instructions.
-
-Reopen Terminal after installation and check:
-
-```sh
-command -v nix
-nix --version
-```
-
-If the installer has written its daemon shell setup but this terminal has not
-loaded it yet:
-
-```sh
-if [ -r /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
-  . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-fi
-```
-
-For an installation created by Determinate Nix Installer, its uninstaller is:
-
-```sh
-sudo /nix/nix-installer uninstall
-```
-
-Use this only when intentionally removing that installation, following its
-installer receipt and documentation. It removes Nix; it is not a rebuild step.
-
-## Rebuild, validate and update
-
-After installation, `dr` targets the current host's configured checkout and output.
-The first activation selects the profile; opening a new terminal loads its alias:
-
-```sh
-alias dr
-dr
-```
-
-The same alias selects `work-mini` on the work Mac and
-`Anands-MacBook-Pro--M3-Pro` on the personal Mac. It applies the local checkout;
-run `git pull` separately when you want to retrieve remote changes.
-Explicit commands are also available:
-
-```sh
-# Validate syntax and evaluate both outputs (no build or activation).
-bash scripts/test.sh --eval-only
-
-# Actually build both systems on an Apple Silicon Mac, without activation.
-bash scripts/test.sh --build
-
-# Build only the selected host; both hosts are still checked for evaluation errors.
-bash scripts/test.sh --build work-mini
-
-# Show a build plan without building it.
-bash scripts/test.sh --dry-run work-mini
-
-# Apply a previously reviewed work change.
-sudo darwin-rebuild switch --flake ~/nix-config#work-mini
-
-# Existing personal target, kept separate.
-sudo darwin-rebuild switch --flake ~/nix-config#Anands-MacBook-Pro--M3-Pro
-
-# Optional contributor hook and its regression checks.
-bash scripts/setup-hooks.sh
-python3 tests/test-validation.py
-
-# Parse one Nix file or evaluate the complete flake manually.
-nix-instantiate --parse path/to/file.nix
-nix flake check --no-build --all-systems
-```
-
-`nix flake check --no-build --all-systems` validates both system derivations
-and the selected-work-profile assertions. `--build` also runs the selection check.
-Linux CI checks syntax, formatting, statix, evaluation and validation-script
-regressions; it does not claim to have built or activated a macOS system.
-Building a Nix system does not run Brew: cask downloads, installation and
-existing-file migrations are exercised only when you activate on the target Mac.
-
-Keep the existing `flake.lock` for the first migration. Later, intentionally run
-`nix flake update`, review the lockfile diff, and validate/build both profiles
-before activation. Compatibility values (`system.stateVersion = 5` and
-`home.stateVersion = "23.05"`) are not package versions and should not be bumped
-just because dependencies were updated. Old unused inputs are retained in the
-lockfile during this split rather than combining migration with a broad update.
-
-## Upgrading Nix on macOS
-
-When `manageNix = true`, nix-darwin manages the Nix package and daemon from the
-locked nixpkgs input. Upgrade through the same reviewed configuration workflow:
-
-```sh
+```shell
 cd ~/nix-config
-nix flake update
-bash scripts/test.sh --build
-dr
-nix --version
+nix flake update       # update flake.lock
+dr                     # apply
+
+# or update the lock and apply in one go
+sudo darwin-rebuild switch --recreate-lock-file --flake ~/nix-config#<host>
 ```
 
-Review the lockfile diff before `dr`. A plain rebuild uses the existing lock;
-updating the inputs and applying them are separate steps.
+### Upgrading Nix
 
-When `manageNix = false`, the installer or external administrator owns daemon
-upgrades. Use Determinate's upgrade process for Determinate Nix. For a standalone
-upstream macOS multi-user installation that is not managed by nix-darwin, the
-[upstream upgrade procedure](https://nix.dev/manual/nix/latest/installation/upgrading.html)
-is:
+With `manageNix = true` (default), Nix itself comes from the locked nixpkgs, so
+`nix flake update` + `dr` upgrades it as well.
 
-```sh
-sudo nix-env --install --file '<nixpkgs>' --attr nix cacert -I nixpkgs=channel:nixpkgs-unstable
-sudo launchctl remove org.nixos.nix-daemon
-sudo launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist
+With `manageNix = false` (Determinate or a standalone install), upgrade outside this repo:
+
+```shell
+sudo -i sh -c 'nix-channel --update && nix-env --install --attr nixpkgs.nix && launchctl remove org.nixos.nix-daemon && launchctl load /Library/LaunchDaemons/org.nixos.nix-daemon.plist'
 ```
 
-These standalone commands use an imperative Nix profile and channel. Use the
-flake workflow above for this repository's default nix-darwin-managed setup.
+---
+
+## Add a new Mac
+
+1. Copy an existing host file whose profile matches what you want:
+   ```shell
+   cp hosts/work-mini.nix hosts/<new-name>.nix
+   ```
+   Edit `name`, `username`, `profile` (`"personal"` or `"work"`) and `git`.
+2. Register it in `flake.nix`:
+   ```nix
+   newmac = mkHost (import ./hosts/<new-name>.nix);
+   # ...
+   darwinConfigurations = {
+     # ...
+     "<new-name>" = newmac;
+   };
+   ```
+   Also add it to `checks.aarch64-darwin` so CI evaluates it.
+3. `git add` the new file. Flakes only see files tracked by Git.
+4. Run step 5 of the install with `#<new-name>`.
+
+---
 
 ## Troubleshooting
 
-### Sudo Touch ID on the work Mac
+### `dr`, `darwin-rebuild` or `nix` missing after a macOS update
 
-Both profiles import `modules/security.nix`, enabling
-`security.pam.services.sudo_local.touchIdAuth` and `reattach`. The latter provides
-Touch ID support inside tmux, which Alacritty starts automatically. See the
-[pinned nix-darwin PAM module](https://github.com/nix-darwin/nix-darwin/blob/4cff07de74b50e64bdd68cd4e722ab5b6b35ee48/modules/security/pam.nix).
+macOS updates overwrite `/etc/zshrc`, which deletes the lines that load Nix.
 
-A Mac mini needs a paired Magic Keyboard with Touch ID and an enrolled
-fingerprint. Confirm Touch ID already unlocks the Mac in System Settings before
-testing sudo; see [Apple's Touch ID requirements](https://support.apple.com/guide/security/magic-keyboard-with-touch-id-secf60513daa/web).
+```shell
+# 1. load nix into this shell
+. /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
 
-After updating the checkout and applying `work-mini`, check the generated PAM
-entries and force a fresh authentication prompt:
-
-```sh
-grep -E 'pam_(tid|reattach)' /etc/pam.d/sudo_local
-sudo -k
-sudo -v
+# 2. rebuild without darwin-rebuild on PATH
+cd ~/nix-config
+sudo nix --extra-experimental-features 'nix-command flakes' run \
+  --inputs-from . nix-darwin#darwin-rebuild -- switch --flake .#<host>
 ```
 
-Test locally in Apple's Terminal outside tmux first, then inside Alacritty/tmux.
-If it works outside tmux only, confirm the `pam_reattach.so` entry is present
-before `pam_tid.so`. Password authentication remains available when Touch ID
-cannot be used. Fingerprint enrollment is managed by macOS, not this repository.
-
-### SSL / CA certificate errors
-
-The old setup could leave a stale link to
-`/etc/static/ssl/certs/ca-certificates.crt`. Inspect the link and available Nix
-bundle first:
-
-```sh
-ls -l /etc/ssl/certs/ca-certificates.crt
-readlink /etc/ssl/certs/ca-certificates.crt
-ls -l /nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt
+If step 2 refuses to overwrite `/etc/zshrc`, move Apple's copy aside and run it again:
+```shell
+sudo mv /etc/zshrc /etc/zshrc.before-nix-darwin.$(date +%Y%m%d)
 ```
 
-For that specific historical problem, the following repair only replaces the
-known dangling symlink when the replacement bundle is readable:
+Open a new terminal; `dr` is back.
 
-```sh
-nix_ca_link=/etc/ssl/certs/ca-certificates.crt
-nix_ca_bundle=/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt
-if [ -L "$nix_ca_link" ] && [ ! -e "$nix_ca_link" ] &&
-   [ "$(readlink "$nix_ca_link")" = /etc/static/ssl/certs/ca-certificates.crt ] &&
-   [ -r "$nix_ca_bundle" ]; then
-  sudo ln -sfn "$nix_ca_bundle" "$nix_ca_link"
-fi
+### SSL error
+
+Check for an old symlink:
+
+```shell
+ls -la /etc/ssl/certs/ca-certificates.crt
 ```
 
-The original report is [SSL CA cert error on macOS](https://discourse.nixos.org/t/ssl-ca-cert-error-on-macos/31171/3).
-For a readable bundle or a corporate TLS proxy, diagnose the trust configuration
-instead of replacing links. Nix supports `NIX_SSL_CERT_FILE` for the client and
-`ssl-cert-file` for the daemon; see the
-[certificate configuration documentation](https://nix.dev/manual/nix/latest/installation/env-variables.html).
-Use the company's complete trusted CA bundle. With `manageNix = true`, daemon
-settings belong in `nix.settings` in `modules/nix-settings.nix`; with external
-Nix management, follow that installation's configuration process.
+If it points to `/etc/static/ssl/certs/ca-certificates.crt`, delete it and point it at
+the Nix bundle:
+
+```shell
+sudo rm /etc/ssl/certs/ca-certificates.crt
+sudo ln -s /nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt /etc/ssl/certs/ca-certificates.crt
+```
+
+> Ref: https://discourse.nixos.org/t/ssl-ca-cert-error-on-macos/31171/3
+
+Behind a corporate TLS proxy, set `NIX_SSL_CERT_FILE` (client) and `ssl-cert-file`
+(daemon, via `nix.settings` in `modules/nix-settings.nix`) to the company CA bundle.
 
 ### Zsh: `compinit: insecure directories`
 
-Run this in an interactive Zsh shell to list affected completion paths:
-
-```sh
-autoload -Uz compaudit
-compaudit
+```shell
+compaudit | xargs chmod g-w
 ```
 
-Inspect the ownership and permissions of the reported paths. For each confirmed
-directory you own, remove group/other write access using its exact path:
+If `compaudit` lists nothing, run this, then open a new shell:
 
-```sh
-ls -ld /path/reported/by/compaudit
-chmod go-w /path/reported/by/compaudit
-compaudit
+```shell
+chmod -R go-w "$(brew --prefix)/share"
 ```
 
-Use sudo only where the intended owner and required permissions justify it.
-For Brew paths, inspect `$(brew --prefix)/share` and its reported children;
-avoid recursively changing the entire tree or modifying the Nix store.
-If no paths are reported, repeat `compaudit` in the shell that displays the
-warning and inspect its `$fpath` and startup files. Home Manager initializes
-completion for work; Oh My Zsh does so for personal. Do not hide the issue by
-disabling the security check. See [Oh My Zsh troubleshooting](https://github.com/ohmyzsh/ohmyzsh/wiki/Troubleshooting).
+Use `sudo` if the reported directories are outside your home directory.
 
-### Alacritty cask disabled / `Brew bundle failed`
+### Homebrew untap permission error
 
-The pinned Homebrew cask contains a disable date of `2026-09-01` because its
-download does not pass Homebrew's macOS Gatekeeper requirements. After that date,
-a fresh Brew installation fails even with an unchanged `flake.lock`. See the
-[cask definition](https://github.com/Homebrew/homebrew-cask/blob/master/Casks/a/alacritty.rb).
+For an error during rebuild like
+`Error: Permission denied @ apply2files - /opt/homebrew/Library/Taps/homebrew/homebrew-bundle`:
 
-The work profile installs Alacritty through Nix/Home Manager instead. Get the
-checkout containing this fix, then repeat the work build and switch commands
-from the setup steps. If the first activation failed, use those explicit commands
-until `dr` is available. The app appears under
-`~/Applications/Home Manager Apps/Alacritty.app`; its theme, font and tmux setup
-are unchanged. The Meslo font remains managed by Brew.
+```shell
+sudo rm /opt/homebrew/Library/Taps/homebrew/homebrew-bundle
+```
 
-An existing Brew Alacritty installation can keep running while a new installation
-is blocked. The personal profile retains its existing app ownership; reinstalling
-its Brew cask can encounter the same error. Nix builds do not run Brew, so a
-successful Nix build alone cannot establish that every cask is installable.
+Taps are declared in `lib/mk-host.nix` (`mutableTaps = false`). If the error keeps
+coming back, fix the tap list there instead.
 
-The macOS prerelease warning is a separate Homebrew support diagnostic. It does
-not explain the date-based cask disablement, and a newer macOS/Homebrew support
-status does not by itself re-enable a disabled cask.
+### Home Manager: "existing file would be clobbered"
 
-### Alacritty missing from Applications or Spotlight
+A dotfile already exists where Home Manager wants to write. Back up or move that file,
+then run `dr` again.
 
-An Alacritty CLI can work while its app is hidden from Spotlight: this repository's
-older Home Manager `stateVersion` defaults to linking app bundles into the Nix
-store. The work profile explicitly uses Home Manager's Spotlight-compatible
-`targets.darwin.copyApps` mode instead. The next activation removes the old managed
-symlink and copies real bundles into `~/Applications/Home Manager Apps`.
-See the [pinned copyApps module](https://github.com/nix-community/home-manager/blob/d2a22a3659a6ae99847ea9176114f6957b8ac62e/modules/targets/darwin/copyapps.nix).
+### Alacritty `Brew bundle failed` / cask disabled
 
-After pulling this change on the work Mac, run `dr` from the checkout, then open
-the managed folder or app:
+The Homebrew Alacritty cask is disabled (it fails Gatekeeper), so a fresh Brew install of
+it fails. Work installs Alacritty through Nix instead, at
+`~/Applications/Home Manager Apps/Alacritty.app`.
 
-```sh
-open "$HOME/Applications/Home Manager Apps"
+### Alacritty not in Spotlight
+
+Run `dr`, then open the app once:
+```shell
 open "$HOME/Applications/Home Manager Apps/Alacritty.app"
 ```
+If macOS asks for App Management access, allow your terminal in
+System Settings → Privacy & Security → App Management, then run `dr` again.
 
-This is the user's Applications folder; the app is not installed directly in
-`/Applications`. Allow Spotlight time to index the copy. If macOS requests App
-Management access during activation, allow the terminal running the rebuild in
-System Settings > Privacy & Security > App Management, then retry `dr`.
-Keep the default managed subfolder: copy mode synchronizes and deletes obsolete
-entries inside it, so it must not point at a general-purpose Applications folder.
-Alacritty remains managed by Nix, with the same settings and normal Gatekeeper
-checks.
+### Touch ID for sudo not working (incl. inside tmux)
 
-### Homebrew untap permission errors
+Both profiles enable Touch ID for sudo, with `pam_reattach` so it also works inside tmux.
 
-For an error such as
-`Permission denied @ apply2files - /opt/homebrew/Library/Taps/homebrew/homebrew-bundle`,
-inspect the tap tree and its links:
-
-```sh
-brew --prefix
-ls -ld /opt/homebrew/Library/Taps /opt/homebrew/Library/Taps/homebrew
-ls -ld /opt/homebrew/Library/Taps/homebrew/homebrew-bundle
-readlink /opt/homebrew/Library/Taps
-readlink /opt/homebrew/Library/Taps/homebrew/homebrew-bundle
+```shell
+grep -E 'pam_(tid|reattach)' /etc/pam.d/sudo_local   # both lines should be listed
+sudo -k && sudo -v                                    # should prompt for Touch ID
 ```
 
-This configuration sets `mutableTaps = false`: declared taps live in the Nix
-store. Reconcile `nix-homebrew.taps` in `lib/mk-host.nix` and rebuild; the builder
-keeps `homebrew.taps` synchronized. Personal declares the bundle tap; work does
-not. For an existing self-managed Brew installation, review the host's
-`migrateHomebrew` setting before adopting it.
+A Mac mini needs a Magic Keyboard with Touch ID and a fingerprint enrolled in
+System Settings.
 
-The old manual unlink workaround applies only to an obsolete tap link in a
-legacy, unmanaged tap tree after confirming it is no longer declared. In that
-case, unlink that individual symlink and retry the rebuild:
+---
 
-```sh
-if [ ! -L /opt/homebrew/Library/Taps ] &&
-   [ ! -L /opt/homebrew/Library/Taps/homebrew ] &&
-   [ -L /opt/homebrew/Library/Taps/homebrew/homebrew-bundle ]; then
-  sudo unlink /opt/homebrew/Library/Taps/homebrew/homebrew-bundle
-fi
+## Work profile notes
+
+**Installs:** Zsh + Powerlevel10k, fzf, bat, btop, tmux, eza, fd, ripgrep, zoxide, delta,
+jq, yq, direnv, glab, gh, AWS CLI, uv, Node.js 22, pnpm, Podman, lazydocker, Alacritty.
+Brew: k6, mole, Meslo Nerd Font, AWS Session Manager plugin, Sublime Text.
+No language runtimes beyond these; use per-project environments.
+
+**Containers (Podman):**
+
+| Command | Effect |
+| --- | --- |
+| `pm up` | create/start the Podman machine |
+| `pm down` | stop it |
+| `pm rootful` / `pm rootless` | restart in that mode (separate image stores) |
+| `pm status` | state, mode, socket, API check |
+
+`docker` / `docker-compose` are wrappers for podman, so Makefiles keep working.
+`DOCKER_HOST` is set for Testcontainers etc. `podman login` stores credentials in Keychain.
+
+**Personal aliases:** `~/.config/zsh/work.zsh` is created on the first rebuild and never
+overwritten after that. `wedit` opens it, `wreload` reloads it.
+
+---
+
+## Repo layout
+
+- `flake.nix`: host list
+- `hosts/`: per-Mac settings (username, git identity, ownership flags)
+- `lib/mk-host.nix`: builds a host from its host file
+- `configuration.nix`, `home.nix`: shared system / user config
+- `features/terminal/home.nix`: shell, aliases (including `dr`), CLI tools
+- `profiles/personal/`, `profiles/work/`: profile-specific packages
+
+## Testing
+
+```shell
+bash scripts/test.sh --eval-only        # syntax + evaluate all hosts
+bash scripts/test.sh --build <host>     # build without activating
+bash scripts/test.sh --dry-run <host>   # show build plan
+bash scripts/setup-hooks.sh             # pre-commit syntax hook
+nix flake check --no-build --all-systems
 ```
 
-For a current Nix-managed tree, use the declarative fix instead of changing
-permissions or deleting store contents. See [nix-homebrew tap management](https://github.com/zhaofengli/nix-homebrew#declarative-tap-management).
-
-### Existing dotfiles or a missing rebuild alias
-
-If Home Manager reports an existing file would be overwritten, inspect and back
-up that particular file before retrying activation. Migrate credentials and
-application settings deliberately. Open a new terminal after activation and run
-`alias dr`; if it is missing, use the explicit host-specific rebuild command
-above and check that Zsh loaded the generated Home Manager configuration.
-
-### Uninstalling and credentials
-
-`uninstall-nix-macos.sh` is a separate destructive maintenance script, not a
-bootstrap step. Prefer the selected installer's documented uninstaller; review
-backups, installation ownership and APFS target detection before any removal.
-Keep credentials out of tracked Nix strings and the Nix store. Use the intended
-credential manager or environment-based work authentication. Ignore rules are
-not a security boundary.
+GitLab CI (`.gitlab-ci.yml`) runs syntax, `nixpkgs-fmt`, `statix` and evaluation checks.
 
 ## References
 
-- [nix-darwin](https://github.com/nix-darwin/nix-darwin)
-- [Home Manager manual](https://nix-community.github.io/home-manager/) and [option reference](https://nix-community.github.io/home-manager/options.xhtml)
-- [nix-homebrew](https://github.com/zhaofengli/nix-homebrew)
-- [Nix package search](https://search.nixos.org/packages), [NixHub](https://www.nixhub.io/) and [MyNixOS](https://mynixos.com/)
-- [NixOS & Flakes Book](https://nixos-and-flakes.thiscute.world/)
-- [NixOS4Noobs](https://jorel.dev/NixOS4Noobs/intro.html)
-- [Devbox documentation](https://www.jetify.com/docs/devbox/)
-- [torgeir's Mac configuration](https://github.com/torgeir/nix-darwin)
-- [ProfessorFlaw's configuration example](https://github.com/ProfessorFlaw/NixDotfiles/blob/main/configuration.nix)
-- [mcdonc's per-user/per-host walkthrough](https://github.com/mcdonc/.nixconfig/blob/master/videos/peruserperhost/script.rst)
-- [Video example](https://www.youtube.com/watch?v=e8vzW5Y8Gzg)
-- [First steps with Nix on macOS](https://sandstorm.de/blog/posts/my-first-steps-with-nix-on-mac-osx-as-homebrew-replacement/)
+- https://nixos-and-flakes.thiscute.world/
+- https://jorel.dev/NixOS4Noobs/intro.html
+- Search packages: https://search.nixos.org/packages · https://www.nixhub.io/ · https://mynixos.com/
+- Devbox: https://www.jetify.com/docs/devbox/
+- nix-homebrew: https://github.com/zhaofengli/nix-homebrew
+- nix-darwin: https://github.com/nix-darwin/nix-darwin
+- Home Manager options: https://nix-community.github.io/home-manager/options.xhtml
+- Mac sample setup: https://github.com/torgeir/nix-darwin
+- GitHub references:
+  - https://github.com/ProfessorFlaw/NixDotfiles/blob/main/configuration.nix
+  - https://github.com/mcdonc/.nixconfig/blob/master/videos/peruserperhost/script.rst
+- YouTube example: https://www.youtube.com/watch?v=e8vzW5Y8Gzg
+- Config example: https://sandstorm.de/blog/posts/my-first-steps-with-nix-on-mac-osx-as-homebrew-replacement/
