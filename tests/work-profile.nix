@@ -93,6 +93,7 @@ assert lib.assertMsg (lib.all (name: lib.elem name packageNames) [ "ff" "ffd" ])
 assert lib.assertMsg (home.home.activation ? workShellFile && lib.hasInfix ".config/zsh/work.zsh" home.programs.zsh.initContent)
   "work-mini must seed and source the user-owned work shell file";
 assert lib.assertMsg (lib.elem pkgs.gh home.home.packages) "work-mini must install the GitHub CLI";
+assert lib.assertMsg (lib.elem pkgs.e1s home.home.packages) "work-mini must install e1s";
 assert lib.assertMsg (lib.elem pkgs.awscli2 home.home.packages) "work-mini must install the AWS CLI";
 assert lib.assertMsg (lib.elem pkgs.nodejs_22 home.home.packages) "work-mini must install Node.js";
 assert lib.assertMsg (lib.elem pkgs.pnpm home.home.packages) "work-mini must install pnpm";

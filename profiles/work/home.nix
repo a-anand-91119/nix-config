@@ -31,6 +31,8 @@ in
     pkgs.gh
     # AWS command-line interface (v2).
     pkgs.awscli2
+    # Terminal UI for AWS ECS (k9s-style); uses your AWS profile/SSO credentials.
+    pkgs.e1s
     # Python package and project manager.
     pkgs.uv
     # JavaScript runtime (22.x LTS line for project tooling).

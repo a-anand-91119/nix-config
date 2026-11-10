@@ -220,7 +220,7 @@ System Settings.
 ## Work profile notes
 
 **Installs:** Zsh + Powerlevel10k, fzf, bat, btop, tmux, eza, fd, ripgrep, zoxide, delta,
-jq, yq, direnv, glab, gh, AWS CLI, uv, Node.js 22, pnpm, Podman, lazydocker, Alacritty.
+jq, yq, direnv, glab, gh, AWS CLI, e1s, uv, Node.js 22, pnpm, Podman, lazydocker, Alacritty.
 Brew: k6, mole, Meslo Nerd Font, AWS Session Manager plugin, Sublime Text.
 No language runtimes beyond these; use per-project environments.
 
